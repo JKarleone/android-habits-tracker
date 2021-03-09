@@ -3,29 +3,24 @@ package com.example.habitstracker.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.habitstracker.utils.ColorPicker
 import com.example.habitstracker.R
-import com.example.habitstracker.utils.Util.Companion.dpToPx
 import com.example.habitstracker.databinding.ActivityHabitBinding
 import com.example.habitstracker.models.Habit
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
 
-class HabitActivity : AppCompatActivity() {
+class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener {
 
     private lateinit var binding: ActivityHabitBinding
     private lateinit var prioritiesItems: List<String>
     private lateinit var intervalItems: List<String>
     private var position: Int? = null
-    private val colorViews = mutableListOf<ImageView>()
+    private lateinit var colorPicker: ColorPicker
     private var currentHabitColor: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +34,7 @@ class HabitActivity : AppCompatActivity() {
         val requestCode = bundle?.getInt(MainActivity.EXTRA_REQUEST_CODE) ?: -1
 
         setAdapters()
-        setColorsToScrollView()
+        colorPicker = ColorPicker(this, binding.habitsColorLinearLayout)
         currentHabitColor = ContextCompat.getColor(this, R.color.gray)
 
         when (requestCode) {
@@ -188,51 +183,9 @@ class HabitActivity : AppCompatActivity() {
         window.decorView.clearFocus()
     }
 
-    private fun setColorsToScrollView() {
-
-        createColorSquares()
-
-        binding.habitsColorLinearLayout.post {
-            val colorPicker = ColorPicker(binding.habitsColorLinearLayout.left, binding.habitsColorLinearLayout.right)
-
-            for (view in colorViews) {
-                view.post {
-                    val color = colorPicker.getColorByPosition(view.left, view.right)
-                    view.setColorFilter(color)
-                    view.tag = color
-                }
-            }
-
-            binding.habitsColorLinearLayout.background = colorPicker.gradient
-        }
-
-    }
-
-    private fun createColorSquares() {
-
-        for (i in 0 until 16) {
-            val view = ImageView(this)
-
-            view.let { imageView ->
-                imageView.setImageResource(R.drawable.ic_habit_color_square)
-                imageView.background = ContextCompat.getDrawable(this, R.drawable.ic_habit_color_border)
-                imageView.setPadding(1.dpToPx,1.dpToPx,1.dpToPx,1.dpToPx)
-
-                imageView.setOnClickListener {
-                    currentHabitColor = it.tag.toString().toInt()
-                    binding.selectedHabitColor.setColorFilter(currentHabitColor)
-                }
-                view.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                    setMargins(20.dpToPx, 10.dpToPx, 20.dpToPx, 10.dpToPx)
-                }
-            }
-
-            colorViews.add(view)
-
-            binding.habitsColorLinearLayout.addView(view)
-
-        }
-
+    override fun onColorSquareItemClick(view: View) {
+        currentHabitColor = view.tag.toString().toInt()
+        binding.selectedHabitColor.setColorFilter(currentHabitColor)
     }
 
     companion object {
@@ -242,4 +195,5 @@ class HabitActivity : AppCompatActivity() {
         private const val EXTRA_HABIT_FREQUENCY = "extra_habit_frequency"
         private const val EXTRA_HABIT_COLOR = "extra_habit_color"
     }
+
 }

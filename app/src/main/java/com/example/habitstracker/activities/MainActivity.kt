@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity(), HabitAdapter.OnHabitItemListener {
         super.onRestoreInstanceState(savedInstanceState)
 
         habits = savedInstanceState.getSerializable(EXTRA_HABITS) as ArrayList<Habit>
-        (binding.habitsList.adapter as? HabitAdapter)?.setHabits(habits)
-        binding.habitsList.adapter?.notifyDataSetChanged()
+        (binding.habitsRecyclerView.adapter as? HabitAdapter)?.setHabits(habits)
+        binding.habitsRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -47,10 +47,10 @@ class MainActivity : AppCompatActivity(), HabitAdapter.OnHabitItemListener {
 
     private fun initRecyclerView() {
         habitAdapter = HabitAdapter(habits, this)
-        binding.habitsList.adapter = habitAdapter
+        binding.habitsRecyclerView.adapter = habitAdapter
         val layoutManager = LinearLayoutManager(this)
-        binding.habitsList.layoutManager = layoutManager
-        binding.habitsList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.habitsRecyclerView.layoutManager = layoutManager
+        binding.habitsRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
     fun onAddNewHabitButtonClicked(view: View) {
@@ -83,14 +83,14 @@ class MainActivity : AppCompatActivity(), HabitAdapter.OnHabitItemListener {
             when {
                 requestCode == NEW_HABIT_REQUEST && resultCode == RESULT_OK -> {
                     habits.add(habit)
-                    binding.habitsList.adapter?.notifyItemInserted(habits.size - 1)
+                    binding.habitsRecyclerView.adapter?.notifyItemInserted(habits.size - 1)
                 }
 
                 requestCode == EDIT_HABIT_REQUEST && resultCode == RESULT_OK -> {
                     val position = getInt(HabitActivity.EXTRA_HABIT_POSITION)
                     habits.removeAt(position)
                     habits.add(position, habit)
-                    binding.habitsList.adapter?.notifyItemChanged(position)
+                    binding.habitsRecyclerView.adapter?.notifyItemChanged(position)
                 }
             }
         }
