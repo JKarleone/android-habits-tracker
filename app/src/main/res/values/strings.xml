@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name" translatable="false">HabitsTracker</string>
+
+    <string name="every_day">every day</string>
+    <string name="every_week">every week</string>
+    <string name="every_month">every month</string>
+    <string name="every_year">every year</string>
+    <string name="divider" translatable="false">|</string>
+
+    <string name="header_new_habit">New habit</string>
+    <string name="header_edit_habit">Edit habit</string>
+    
+    <string name="habit_button_add">Add</string>
+    <string name="habit_button_save">Save</string>
+
+    <string name="habit_priority_high">High</string>
+    <string name="habit_priority_medium">Medium</string>
+    <string name="habit_priority_low">Low</string>
+
+    <string name="habit_type_good">Good</string>
+    <string name="habit_type_bad">Bad</string>
+    <string name="habit_input_hint_name">Name</string>
+    <string name="habit_input_hint_description">Description</string>
+
+    <string name="times">times</string>
+    <string name="count">Count</string>
+    <string name="priority">Priority</string>
+    <string name="interval">Interval</string>
+    <string name="habit_type">Habit type</string>
+
+    <string name="error_fill_this_field">You must fill this field.</string>
+    <string name="error_make_a_choice">You must make a choice here.</string>
+    <string name="selected_color">Selected color</string>
+
+</resources>
