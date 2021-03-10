@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.habitstracker.adapters.HabitAdapter
 import com.example.habitstracker.databinding.ActivityMainBinding
 import com.example.habitstracker.models.Habit
-import com.example.habitstracker.utils.HabitColor
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
@@ -24,9 +23,6 @@ class MainActivity : AppCompatActivity(), HabitAdapter.OnHabitItemListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        habits.add(Habit("Smoking", "Smoke a lot", HabitPriority.High, HabitType.Bad, 2, HabitFrequency.EveryWeek, HabitColor.BlueLight.getColor()))
-        habits.add(Habit("Drink water", "Just Do It", HabitPriority.Medium, HabitType.Good, 5, HabitFrequency.EveryDay, HabitColor.DeepOrange.getColor()))
 
         initRecyclerView()
     }
