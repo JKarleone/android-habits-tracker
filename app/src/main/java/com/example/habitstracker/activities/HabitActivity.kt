@@ -13,6 +13,7 @@ import com.example.habitstracker.models.Habit
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
+import com.google.android.material.textfield.TextInputLayout
 
 class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener {
 
@@ -114,11 +115,11 @@ class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener
                 val frequencyTimes = binding.editTextTimesCount.text.toString().toInt()
                 val frequency = HabitFrequency.getHabitFrequencyByString(binding.editTextInterval.text.toString())
                 val color = currentHabitColor
-
                 val type = when(binding.radioGroupHabitType.checkedRadioButtonId) {
                     R.id.radioButtonGoodHabit -> HabitType.Good
                     else -> HabitType.Bad
                 }
+
                 val habit = Habit(name, description, priority!!, type, frequencyTimes, frequency!!,color)
                 putExtra(EXTRA_HABIT, habit)
                 putExtra(EXTRA_HABIT_POSITION, position)
@@ -129,72 +130,71 @@ class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener
     }
 
     private fun isAllFieldsFilled(): Boolean {
-        var isOk = true
 
         clearFocus()
 
-        if (binding.editTextName.text.toString().isEmpty()) {
-            isOk = false
-            binding.inputLayoutName.error = resources.getString(R.string.error_fill_this_field)
-        } else {
-            binding.inputLayoutName.isErrorEnabled = false
-        }
+        val inputViews = listOf(
+                InputView(binding.editTextName, binding.inputLayoutName, R.string.error_fill_this_field),
+                InputView(binding.editTextDescription, binding.inputLayoutDescription, R.string.error_fill_this_field),
+                InputView(binding.editTextPriority, binding.inputLayoutPriority, R.string.error_make_a_choice),
+                InputView(binding.editTextTimesCount, binding.inputLayoutTimesCount, R.string.error_fill_this_field),
+                InputView(binding.editTextInterval, binding.inputLayoutInterval, R.string.error_make_a_choice)
+        )
 
-        if (binding.editTextDescription.text.toString().isEmpty()) {
-            isOk = false
-            binding.inputLayoutDescription.error = resources.getString(R.string.error_fill_this_field)
-        } else {
-            binding.inputLayoutDescription.isErrorEnabled = false
-        }
-
-        if (binding.editTextPriority.text.toString().isEmpty()) {
-            isOk = false
-            binding.inputLayoutPriority.error = resources.getString(R.string.error_make_a_choice)
-        } else {
-            binding.inputLayoutPriority.isErrorEnabled = false
-        }
-
-        if (binding.editTextTimesCount.text.toString().isEmpty()) {
-            isOk = false
-            binding.inputLayoutTimesCount.error = resources.getString(R.string.error_fill_this_field)
-        } else {
-            binding.inputLayoutTimesCount.isErrorEnabled = false
-        }
-
-        if (binding.editTextInterval.text.toString().isEmpty()) {
-            isOk = false
-            binding.inputLayoutInterval.error = resources.getString(R.string.error_make_a_choice)
-        } else {
-            binding.inputLayoutInterval.isErrorEnabled = false
-        }
-
-        if (binding.radioGroupHabitType.checkedRadioButtonId == View.NO_ID) {
-            isOk = false
-            binding.radioGroupError.setText(R.string.error_make_a_choice)
-            binding.radioGroupError.visibility = View.VISIBLE
-        } else {
-            binding.radioGroupError.visibility = View.GONE
-        }
-
-        if (currentHabitColor == ContextCompat.getColor(this, R.color.gray)) {
-            isOk = false
-            binding.selectedHabitColorError.setText(R.string.error_make_a_choice)
-            binding.selectedHabitColorError.visibility = View.VISIBLE
-        } else {
-            binding.selectedHabitColorError.visibility = View.GONE
-        }
-
-        return isOk
+        return isNoErrorInFields(inputViews).and(isTypeSelected().and(isColorSelected()))
     }
 
     private fun clearFocus() {
         window.decorView.clearFocus()
     }
 
+    private fun isTypeSelected(): Boolean {
+        var result = true
+        if (binding.radioGroupHabitType.checkedRadioButtonId == View.NO_ID) {
+            result = false
+            binding.radioGroupError.setText(R.string.error_make_a_choice)
+            binding.radioGroupError.visibility = View.VISIBLE
+        } else
+            binding.radioGroupError.visibility = View.GONE
+
+        return result
+    }
+
+    private fun isColorSelected(): Boolean {
+        val result = currentHabitColor != ContextCompat.getColor(this, R.color.gray)
+        if (!result) {
+            binding.selectedHabitColorError.setText(R.string.error_make_a_choice)
+            binding.selectedHabitColorError.visibility = View.VISIBLE
+        } else {
+            binding.selectedHabitColorError.visibility = View.GONE
+        }
+        return result
+    }
+
+    private fun isNoErrorInFields(inputViews: List<InputView>): Boolean {
+        var result = true
+
+        for (view in inputViews) {
+            if (view.inputView.text.toString().isEmpty()) {
+                result = false
+                view.errorLayout.error = getString(view.errorStringResource)
+            } else
+                view.errorLayout.isErrorEnabled = false
+        }
+
+        return result
+    }
+
     override fun onColorSquareItemClick(view: View) {
         currentHabitColor = view.tag.toString().toInt()
         binding.selectedHabitColor.setColorFilter(currentHabitColor)
     }
+
+    private data class InputView(
+            val inputView: EditText,
+            val errorLayout: TextInputLayout,
+            val errorStringResource: Int
+    )
 
     companion object {
         const val EXTRA_HABIT = "extra_habit"
