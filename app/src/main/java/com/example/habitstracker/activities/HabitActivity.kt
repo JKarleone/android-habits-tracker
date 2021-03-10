@@ -176,6 +176,14 @@ class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener
             binding.radioGroupError.visibility = View.GONE
         }
 
+        if (currentHabitColor == ContextCompat.getColor(this, R.color.gray)) {
+            isOk = false
+            binding.selectedHabitColorError.setText(R.string.error_make_a_choice)
+            binding.selectedHabitColorError.visibility = View.VISIBLE
+        } else {
+            binding.selectedHabitColorError.visibility = View.GONE
+        }
+
         return isOk
     }
 
