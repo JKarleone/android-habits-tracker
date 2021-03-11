@@ -23,4 +23,6 @@
     <string name="error_fill_this_field">Вы должны заполнить данное поле.</string>
     <string name="error_make_a_choice">Вы должны сделать выбор.</string>
     <string name="selected_color">Выбранный цвет</string>
+    <string name="header_habits">Привычки</string>
+    <string name="header_priority">Приоритет</string>
 </resources>

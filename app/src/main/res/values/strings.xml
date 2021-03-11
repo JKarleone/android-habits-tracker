@@ -31,7 +31,7 @@
     <string name="error_fill_this_field">You must fill this field.</string>
     <string name="error_make_a_choice">You must make a choice here.</string>
     <string name="selected_color">Selected color</string>
-    <string name="habits">Habits</string>
-    <string name="priority">Priority</string>
+    <string name="header_habits">Habits</string>
+    <string name="header_priority">Priority</string>
 
 </resources>
