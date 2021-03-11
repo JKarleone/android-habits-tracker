@@ -1,8 +1,10 @@
 package com.example.habitstracker.activities
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -185,9 +187,22 @@ class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener
         return result
     }
 
+    private fun getSelectedColorRGB(): String {
+        return String.format("#%06X", (0xFFFFFF and currentHabitColor))
+    }
+
+    private fun getSelectedColorHSV(): FloatArray {
+        val hsv = FloatArray(3)
+        Color.colorToHSV(currentHabitColor, hsv)
+        return hsv
+    }
+
     override fun onColorSquareItemClick(view: View) {
         currentHabitColor = view.tag.toString().toInt()
         binding.selectedHabitColor.setColorFilter(currentHabitColor)
+        Log.d(localClassName, "Selected color in RGB: ${getSelectedColorRGB()}")
+        val hsv = getSelectedColorHSV()
+        Log.d(localClassName, "Selected color in HSV: ${hsv[0]}, ${hsv[1]}, ${hsv[2]}")
     }
 
     private data class InputView(
