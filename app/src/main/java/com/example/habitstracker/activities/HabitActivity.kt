@@ -200,9 +200,9 @@ class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener
     override fun onColorSquareItemClick(view: View) {
         currentHabitColor = view.tag.toString().toInt()
         binding.selectedHabitColor.setColorFilter(currentHabitColor)
-        Log.d(localClassName, "Selected color in RGB: ${getSelectedColorRGB()}")
+        binding.selectedHabitColorRGB.text = getSelectedColorRGB()
         val hsv = getSelectedColorHSV()
-        Log.d(localClassName, "Selected color in HSV: ${hsv[0]}, ${hsv[1]}, ${hsv[2]}")
+        binding.selectedHabitColorHSV.text = "${hsv[0]}°, ${hsv[1]}, ${hsv[2]}"
     }
 
     private data class InputView(
