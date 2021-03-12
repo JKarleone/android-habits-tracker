@@ -50,18 +50,13 @@ class MainActivity : AppCompatActivity(), HabitAdapter.OnHabitItemListener {
     }
 
     fun onAddNewHabitButtonClicked(view: View) {
-        val intent = Intent(this, HabitActivity::class.java)
-        intent.putExtra(EXTRA_REQUEST_CODE, NEW_HABIT_REQUEST)
+        val intent = HabitActivity.getIntent(this, NEW_HABIT_REQUEST)
         startActivityForResult(intent, NEW_HABIT_REQUEST)
     }
 
     override fun onHabitItemClick(position: Int) {
         val habit = habits[position]
-        val intent = Intent(this, HabitActivity::class.java).apply {
-            putExtra(EXTRA_REQUEST_CODE, EDIT_HABIT_REQUEST)
-            putExtra(HabitActivity.EXTRA_HABIT, habit)
-            putExtra(HabitActivity.EXTRA_HABIT_POSITION, position)
-        }
+        val intent = HabitActivity.getIntent(this, EDIT_HABIT_REQUEST, habit, position)
         startActivityForResult(intent, EDIT_HABIT_REQUEST)
     }
 

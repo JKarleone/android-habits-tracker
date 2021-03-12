@@ -1,10 +1,10 @@
 package com.example.habitstracker.activities
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -217,6 +217,15 @@ class HabitActivity : AppCompatActivity(), ColorPicker.OnColorSquareItemListener
         private const val EXTRA_HABIT_PRIORITY = "extra_habit_priority"
         private const val EXTRA_HABIT_FREQUENCY = "extra_habit_frequency"
         private const val EXTRA_HABIT_COLOR = "extra_habit_color"
+
+        fun getIntent(context: Context, requestCode: Int, habit: Habit? = null, position: Int? = null): Intent {
+            return Intent(context, HabitActivity::class.java).apply {
+                putExtra(MainActivity.EXTRA_REQUEST_CODE, requestCode)
+                putExtra(EXTRA_HABIT, habit)
+                putExtra(EXTRA_HABIT_POSITION, position)
+            }
+        }
+
     }
 
 }
