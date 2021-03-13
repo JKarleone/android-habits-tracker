@@ -7,12 +7,16 @@
     android:orientation="vertical"
     android:isScrollContainer="true"
     android:padding="10dp"
+    android:clipToPadding="false"
+    android:clipChildren="false"
     tools:context=".activities.HabitActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:clipChildren="false">
 
         <LinearLayout
             android:orientation="vertical"
@@ -83,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:hint="@string/count"
+                    app:errorIconDrawable="@null"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -242,9 +247,10 @@
 
             <HorizontalScrollView
                 android:id="@+id/colorScrollView"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="-10dp"
                 android:scrollbars="none">
 
                 <LinearLayout
