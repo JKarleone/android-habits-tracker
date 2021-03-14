@@ -51,11 +51,10 @@ class HabitAdapter(private var habits: MutableList<Habit>,
             type.text = habit.type.toString()
             priority.text = habit.priority.toString()
 
-            val countTimes = habit.frequencyTimes.toString()
-            val times = view.resources.getString(R.string.times)
+            val countTimesString = view.resources.getQuantityString(R.plurals.plurals_frequency_times, habit.frequencyTimes, habit.frequencyTimes)
             val frequencyString = habit.frequency.toString()
 
-            frequency.text = "$countTimes $times $frequencyString"
+            frequency.text = "$countTimesString $frequencyString"
         }
 
     }
