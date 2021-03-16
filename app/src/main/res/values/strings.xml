@@ -33,6 +33,8 @@
     <string name="selected_color">Selected color</string>
     <string name="header_habits">Habits</string>
     <string name="header_priority">Priority</string>
+    <string name="rgb" translatable="false">RGB:</string>
+    <string name="hsv" translatable="false">HSV:</string>
 
     <plurals name="plurals_frequency_times">
         <item quantity="one">%d time</item>

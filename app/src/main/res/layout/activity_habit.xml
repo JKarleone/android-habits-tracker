@@ -211,7 +211,7 @@
                 android:paddingVertical="5dp">
 
                 <TextView
-                    android:text="RGB: "
+                    android:text="@string/rgb"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -232,7 +232,7 @@
                 android:paddingVertical="5dp">
 
                 <TextView
-                    android:text="HSV: "
+                    android:text="@string/hsv"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
