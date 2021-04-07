@@ -1,10 +1,12 @@
 package com.example.habitstracker
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.habitstracker.activities.MainActivity
 import com.example.habitstracker.databinding.FragmentHabitEditorBinding
 import com.example.habitstracker.models.Habit
 import com.example.habitstracker.utils.ColorPicker
@@ -81,13 +84,13 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
 
     private fun fillForm() {
         if (habit != null) {
-            binding.habitActivityHeader.text = resources.getString(R.string.header_edit_habit)
+            (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.header_edit_habit)
             binding.confirmHabitButton.text = resources.getString(R.string.habit_button_save)
             binding.confirmHabitButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_edit)
             habit?.let { fillFieldsWithHabitData(it) }
         }
         else {
-            binding.habitActivityHeader.text = resources.getString(R.string.header_new_habit)
+            (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.header_new_habit)
             binding.confirmHabitButton.text = resources.getString(R.string.habit_button_add)
             binding.confirmHabitButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_add)
             binding.selectedHabitColor.setColorFilter(currentHabitColor)
@@ -158,7 +161,12 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun clearFocus() {
-//        window.decorView.clearFocus()
+        val viewInFocus = activity?.currentFocus
+        val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        // Hide keyboard
+        inputMethodManager?.hideSoftInputFromWindow(viewInFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        // Clear focus of last input field
+        viewInFocus?.clearFocus()
     }
 
     private fun isTypeSelected(): Boolean {

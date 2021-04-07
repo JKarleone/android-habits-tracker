@@ -22,14 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/habitActivityHeader"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceHeadline5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="@string/header_new_habit"/>
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputLayoutName"
                 android:layout_width="match_parent"
