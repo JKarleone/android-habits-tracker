@@ -58,6 +58,12 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
     private fun getArgs() {
         habit = args.habit
         id = habit?.id

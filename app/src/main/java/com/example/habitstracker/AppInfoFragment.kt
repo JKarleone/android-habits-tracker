@@ -9,30 +9,6 @@ import androidx.fragment.app.Fragment
 
 class AppInfoFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        Log.d(TAG, "onCreate")
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        Log.d(TAG, "onResume")
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        Log.d(TAG, "onStop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        Log.d(TAG, "onDestroy")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
