@@ -107,11 +107,15 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
             HabitType.Good -> binding.radioGroupHabitType.check(R.id.radioButtonGoodHabit)
             HabitType.Bad -> binding.radioGroupHabitType.check(R.id.radioButtonBadHabit)
         }
-        binding.selectedHabitColor.setColorFilter(currentHabitColor)
+        setSelectedColorToView()
     }
 
     override fun onColorSquareItemClick(view: View) {
         currentHabitColor = view.tag.toString().toInt()
+        setSelectedColorToView()
+    }
+
+    private fun setSelectedColorToView() {
         binding.selectedHabitColor.setColorFilter(currentHabitColor)
         binding.selectedHabitColorRGB.text = getSelectedColorRGB()
         val hsv = getSelectedColorHSV()
