@@ -1,24 +1,20 @@
-package com.example.habitstracker
+package com.example.habitstracker.presentation.home.habits
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.habitstracker.adapters.HabitAdapter
+import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHabitsBinding
-import com.example.habitstracker.models.Habit
+import com.example.habitstracker.domain.model.Habit
 import com.example.habitstracker.utils.HabitType
-import java.io.Serializable
 
 private const val ARG_HABIT_TYPE = "habit_type"
-private const val ARG_ITEM_CLICK_LISTENER = "item_click_listener"
 
-class HabitsFragment : Fragment() {
+class HabitsFragment(private var itemClickListener: HabitAdapter.OnHabitItemListener) : Fragment() {
 
     private var _binding: FragmentHabitsBinding? = null
     private val binding get() = _binding!!
@@ -28,13 +24,10 @@ class HabitsFragment : Fragment() {
     private lateinit var layoutManager: LinearLayoutManager
     private var habits = ArrayList<Habit>()
 
-    private var itemClickListener: HabitAdapter.OnHabitItemListener? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             habitType = it.getSerializable(ARG_HABIT_TYPE) as? HabitType
-            itemClickListener = it.getSerializable(ARG_ITEM_CLICK_LISTENER) as? HabitAdapter.OnHabitItemListener
         }
     }
 
@@ -57,7 +50,7 @@ class HabitsFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        habitAdapter = HabitAdapter(habits, itemClickListener!!)
+        habitAdapter = HabitAdapter(habits, itemClickListener)
         binding.habitsRecyclerView.adapter = habitAdapter
         layoutManager = LinearLayoutManager(requireContext())
         binding.habitsRecyclerView.layoutManager = layoutManager
@@ -82,14 +75,12 @@ class HabitsFragment : Fragment() {
          */
         @JvmStatic
         fun newInstance(habitType: HabitType, itemClickListener: HabitAdapter.OnHabitItemListener) =
-            HabitsFragment().apply {
+            HabitsFragment(itemClickListener).apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_HABIT_TYPE, habitType)
-                    putSerializable(ARG_ITEM_CLICK_LISTENER, itemClickListener as Serializable)
                 }
             }
 
-        private const val EXTRA_HABITS = "extra_habits"
         private const val TAG = "FragmentHabits"
     }
 }

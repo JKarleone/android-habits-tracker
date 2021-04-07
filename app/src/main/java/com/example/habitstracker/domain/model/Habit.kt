@@ -1,4 +1,4 @@
-package com.example.habitstracker.models
+package com.example.habitstracker.domain.model
 
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority

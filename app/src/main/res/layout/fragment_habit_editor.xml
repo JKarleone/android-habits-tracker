@@ -8,7 +8,7 @@
     android:padding="10dp"
     android:clipToPadding="false"
     android:clipChildren="false"
-    tools:context=".HabitEditorFragment">
+    tools:context=".presentation.home.habiteditor.HabitEditorFragment">
 
     <ScrollView
         android:layout_width="match_parent"

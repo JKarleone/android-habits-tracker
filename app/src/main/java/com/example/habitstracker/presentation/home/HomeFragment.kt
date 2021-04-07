@@ -1,4 +1,4 @@
-package com.example.habitstracker
+package com.example.habitstracker.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,14 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.example.habitstracker.adapters.HabitAdapter
+import com.example.habitstracker.App
+import com.example.habitstracker.R
+import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHomeBinding
-import com.example.habitstracker.models.Habit
+import com.example.habitstracker.domain.model.Habit
+import com.example.habitstracker.presentation.home.habiteditor.HabitEditorFragment
+import com.example.habitstracker.presentation.home.habits.HabitAdapter
+import com.example.habitstracker.presentation.home.habits.HabitsFragment
 import com.example.habitstracker.utils.HabitType
 import com.google.android.material.tabs.TabLayoutMediator
-import java.io.Serializable
 
-class HomeFragment : Fragment(), Serializable, HabitAdapter.OnHabitItemListener {
+class HomeFragment : Fragment(), HabitAdapter.OnHabitItemListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!

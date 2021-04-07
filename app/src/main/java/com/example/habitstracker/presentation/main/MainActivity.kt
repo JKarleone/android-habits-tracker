@@ -1,8 +1,7 @@
-package com.example.habitstracker.activities
+package com.example.habitstracker.presentation.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController

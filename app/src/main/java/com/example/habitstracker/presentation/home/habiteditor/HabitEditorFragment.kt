@@ -1,4 +1,4 @@
-package com.example.habitstracker
+package com.example.habitstracker.presentation.home.habiteditor
 
 import android.content.Context
 import android.graphics.Color
@@ -15,9 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.habitstracker.activities.MainActivity
+import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitEditorBinding
-import com.example.habitstracker.models.Habit
+import com.example.habitstracker.domain.model.Habit
+import com.example.habitstracker.presentation.main.MainActivity
 import com.example.habitstracker.utils.ColorPicker
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority

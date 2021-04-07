@@ -1,4 +1,4 @@
-package com.example.habitstracker.adapters
+package com.example.habitstracker.presentation.home.habits
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.R
-import com.example.habitstracker.models.Habit
+import com.example.habitstracker.domain.model.Habit
 
 class HabitAdapter(private var habits: MutableList<Habit>,
-                   private val itemClickListener: HabitAdapter.OnHabitItemListener) : RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
+                   private val itemClickListener: OnHabitItemListener
+) : RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)

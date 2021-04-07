@@ -1,6 +1,6 @@
-package com.example.habitstracker
+package com.example.habitstracker.data
 
-import com.example.habitstracker.models.Habit
+import com.example.habitstracker.domain.model.Habit
 import com.example.habitstracker.utils.HabitType
 
 object Data {
