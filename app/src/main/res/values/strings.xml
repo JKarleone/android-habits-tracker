@@ -9,7 +9,7 @@
 
     <string name="header_new_habit">New habit</string>
     <string name="header_edit_habit">Edit habit</string>
-    
+
     <string name="habit_button_add">Add</string>
     <string name="habit_button_save">Save</string>
 
@@ -35,6 +35,8 @@
     <string name="header_priority">Priority</string>
     <string name="rgb" translatable="false">RGB:</string>
     <string name="hsv" translatable="false">HSV:</string>
+    <string name="habits">Habits</string>
+    <string name="app_info">About the app</string>
 
     <plurals name="plurals_frequency_times">
         <item quantity="one">%d time</item>
@@ -43,5 +45,8 @@
         <item quantity="many">%d times</item>
         <item quantity="other">%d times</item>
     </plurals>
+
+    <string name="view_pager_good_habits_header">Good</string>
+    <string name="view_pager_bad_habits_header">Bad</string>
 
 </resources>
