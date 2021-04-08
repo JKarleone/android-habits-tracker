@@ -20,7 +20,7 @@ class HabitsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var habitType: HabitType? = null
-    private lateinit var habitAdapter: HabitAdapter
+    private lateinit var habitsAdapter: HabitsAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private var habits = ArrayList<Habit>()
 
@@ -50,8 +50,8 @@ class HabitsFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        habitAdapter = HabitAdapter(habits, parentFragment as HabitAdapter.OnHabitItemListener)
-        binding.habitsRecyclerView.adapter = habitAdapter
+        habitsAdapter = HabitsAdapter(habits, parentFragment as HabitsAdapter.OnHabitItemListener)
+        binding.habitsRecyclerView.adapter = habitsAdapter
         layoutManager = LinearLayoutManager(requireContext())
         binding.habitsRecyclerView.layoutManager = layoutManager
         binding.habitsRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
@@ -60,8 +60,7 @@ class HabitsFragment : Fragment() {
     fun updateRecyclerViewData() {
         habitType?.let {
             habits = Data.getHabitsByType(it)
-            habitAdapter.setHabits(habits)
-            habitAdapter.notifyDataSetChanged()
+            habitsAdapter.setHabits(habits)
         }
     }
 

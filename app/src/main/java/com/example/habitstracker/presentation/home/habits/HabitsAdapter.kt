@@ -5,14 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.R
 import com.example.habitstracker.domain.model.Habit
 
-class HabitAdapter(
+class HabitsAdapter(
         private var habits: MutableList<Habit>,
         private val itemClickListener: OnHabitItemListener
-) : RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<HabitsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,8 +32,11 @@ class HabitAdapter(
         return habits.size
     }
 
-    fun setHabits(habits: MutableList<Habit>) {
-        this.habits = habits
+    fun setHabits(newListOfHabits: MutableList<Habit>) {
+        val diffUtil = HabitsDiffUtil(habits, newListOfHabits)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        habits = newListOfHabits
+        diffResults.dispatchUpdatesTo(this)
     }
 
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {

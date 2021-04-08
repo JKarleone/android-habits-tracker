@@ -13,12 +13,12 @@ import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHomeBinding
 import com.example.habitstracker.domain.model.Habit
 import com.example.habitstracker.presentation.home.habiteditor.HabitEditorFragment
-import com.example.habitstracker.presentation.home.habits.HabitAdapter
+import com.example.habitstracker.presentation.home.habits.HabitsAdapter
 import com.example.habitstracker.presentation.home.habits.HabitsFragment
 import com.example.habitstracker.utils.HabitType
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeFragment : Fragment(), HabitAdapter.OnHabitItemListener {
+class HomeFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
