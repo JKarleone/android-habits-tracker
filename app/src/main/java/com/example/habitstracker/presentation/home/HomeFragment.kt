@@ -13,12 +13,11 @@ import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHomeBinding
 import com.example.habitstracker.domain.model.Habit
 import com.example.habitstracker.presentation.home.habiteditor.HabitEditorFragment
-import com.example.habitstracker.presentation.home.habits.HabitsAdapter
 import com.example.habitstracker.presentation.home.habits.HabitsFragment
 import com.example.habitstracker.utils.HabitType
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -86,12 +85,6 @@ class HomeFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     private fun getHabitsFragmentByHabitType(habitType: HabitType) : HabitsFragment? {
         val fragmentTag = if (habitType == HabitType.Good) "f0" else "f1"
         return childFragmentManager.findFragmentByTag(fragmentTag) as? HabitsFragment
-    }
-
-    override fun onHabitItemClick(habit: Habit) {
-        val navController = findNavController()
-        val action = HomeFragmentDirections.actionHomeFragmentToHabitEditorFragment(habit)
-        navController.navigate(action)
     }
 
     companion object {

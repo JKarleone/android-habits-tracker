@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHabitsBinding
 import com.example.habitstracker.domain.model.Habit
+import com.example.habitstracker.presentation.home.HomeFragment
+import com.example.habitstracker.presentation.home.HomeFragmentDirections
 import com.example.habitstracker.utils.HabitType
 
 private const val ARG_HABIT_TYPE = "habit_type"
 
-class HabitsFragment : Fragment() {
+class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
 
     private var _binding: FragmentHabitsBinding? = null
     private val binding get() = _binding!!
@@ -50,7 +53,7 @@ class HabitsFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        habitsAdapter = HabitsAdapter(habits, parentFragment as HabitsAdapter.OnHabitItemListener)
+        habitsAdapter = HabitsAdapter(habits, this)
         binding.habitsRecyclerView.adapter = habitsAdapter
         layoutManager = LinearLayoutManager(requireContext())
         binding.habitsRecyclerView.layoutManager = layoutManager
@@ -62,6 +65,13 @@ class HabitsFragment : Fragment() {
             habits = Data.getHabitsByType(it)
             habitsAdapter.setHabits(habits)
         }
+    }
+
+    override fun onHabitItemClick(habit: Habit) {
+        val fragment = parentFragment as HomeFragment
+        val navController = fragment.findNavController()
+        val action = HomeFragmentDirections.actionHomeFragmentToHabitEditorFragment(habit)
+        navController.navigate(action)
     }
 
     companion object {
