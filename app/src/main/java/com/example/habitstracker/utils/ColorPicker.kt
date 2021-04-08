@@ -1,18 +1,16 @@
 package com.example.habitstracker.utils
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.habitstracker.R
-import com.example.habitstracker.activities.HabitActivity
 import com.example.habitstracker.utils.Util.Companion.dpToPx
 
-class ColorPicker(private val context: Context,
+class ColorPicker(private val fragment: Fragment,
                   private val parentView: LinearLayout) {
 
     private var scrollViewWidth: Int = 0
@@ -49,15 +47,15 @@ class ColorPicker(private val context: Context,
     private fun createColorSquares() {
 
         for (i in 0 until 16) {
-            val view = ImageView(context)
+            val view = ImageView(fragment.requireContext())
 
             view.apply {
                 setImageResource(R.drawable.ic_habit_color_square)
-                background = ContextCompat.getDrawable(context, R.drawable.ic_habit_color_border)
+                background = ContextCompat.getDrawable(fragment.requireContext(), R.drawable.ic_habit_color_border)
                 setPadding(1.dpToPx,1.dpToPx,1.dpToPx,1.dpToPx)
 
                 setOnClickListener {
-                    (context as HabitActivity).onColorSquareItemClick(it)
+                    (fragment as? OnColorSquareItemListener)?.onColorSquareItemClick(it)
                 }
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                     setMargins(20.dpToPx, 10.dpToPx, 20.dpToPx, 10.dpToPx)

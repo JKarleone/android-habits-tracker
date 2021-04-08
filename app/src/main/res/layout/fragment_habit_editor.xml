@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:isScrollContainer="true"
     android:padding="10dp"
     android:clipToPadding="false"
     android:clipChildren="false"
-    tools:context=".activities.HabitActivity">
+    tools:context=".presentation.home.habiteditor.HabitEditorFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,14 +21,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/habitActivityHeader"
-                android:textAlignment="center"
-                android:textAppearance="?attr/textAppearanceHeadline5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="@string/header_new_habit"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputLayoutName"
@@ -219,6 +210,7 @@
                 <TextView
                     android:id="@+id/selectedHabitColorRGB"
                     android:textAppearance="?attr/textAppearanceBody2"
+                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -240,6 +232,7 @@
                 <TextView
                     android:id="@+id/selectedHabitColorHSV"
                     android:textAppearance="?attr/textAppearanceBody2"
+                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -275,7 +268,6 @@
         android:layout_gravity="center|bottom"
         android:textAlignment="center"
         app:iconGravity="textStart"
-        app:cornerRadius="24dp"
-        android:onClick="onSaveHabitButtonClicked" />
+        app:cornerRadius="24dp" />
 
 </LinearLayout>

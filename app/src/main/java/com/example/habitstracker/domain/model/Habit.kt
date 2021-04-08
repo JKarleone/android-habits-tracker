@@ -1,4 +1,4 @@
-package com.example.habitstracker.models
+package com.example.habitstracker.domain.model
 
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
@@ -12,5 +12,10 @@ data class Habit(
         val type: HabitType,
         val frequencyTimes: Int,
         val frequency: HabitFrequency,
-        val color: Int
-) : Serializable
+        val color: Int,
+        val id: Int = itemId++
+) : Serializable {
+        companion object {
+                private var itemId = 0
+        }
+}

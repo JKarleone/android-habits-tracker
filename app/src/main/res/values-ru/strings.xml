@@ -33,4 +33,9 @@
         <item quantity="other">%d раз</item>
     </plurals>
 
+    <string name="habits">Привычки</string>
+    <string name="app_info">О приложении</string>
+    <string name="view_pager_good_habits_header">Хорошие</string>
+    <string name="view_pager_bad_habits_header">Плохие</string>
+
 </resources>

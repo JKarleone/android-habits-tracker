@@ -1,18 +1,19 @@
-package com.example.habitstracker.adapters
+package com.example.habitstracker.presentation.home.habits
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.R
-import com.example.habitstracker.activities.MainActivity
-import com.example.habitstracker.models.Habit
+import com.example.habitstracker.domain.model.Habit
 
-class HabitAdapter(private var habits: MutableList<Habit>,
-                   private val context: Context) : RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
+class HabitsAdapter(
+        private var habits: MutableList<Habit>,
+        private val itemClickListener: OnHabitItemListener
+) : RecyclerView.Adapter<HabitsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -23,7 +24,7 @@ class HabitAdapter(private var habits: MutableList<Habit>,
         holder.bind(habits[position])
 
         holder.itemView.setOnClickListener {
-            (context as MainActivity).onHabitItemClick(position)
+            itemClickListener.onHabitItemClick(habits[position])
         }
     }
 
@@ -31,8 +32,11 @@ class HabitAdapter(private var habits: MutableList<Habit>,
         return habits.size
     }
 
-    fun setHabits(habits: MutableList<Habit>) {
-        this.habits = habits
+    fun setHabits(newListOfHabits: MutableList<Habit>) {
+        val diffUtil = HabitsDiffUtil(habits, newListOfHabits)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        habits = newListOfHabits
+        diffResults.dispatchUpdatesTo(this)
     }
 
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
@@ -60,7 +64,7 @@ class HabitAdapter(private var habits: MutableList<Habit>,
     }
 
     interface OnHabitItemListener {
-        fun onHabitItemClick(position: Int)
+        fun onHabitItemClick(habit: Habit)
     }
 
 }
