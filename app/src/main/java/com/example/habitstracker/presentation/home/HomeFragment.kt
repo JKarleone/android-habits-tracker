@@ -31,7 +31,7 @@ class HomeFragment : Fragment(), HabitAdapter.OnHabitItemListener {
     ): View? {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        viewPagerAdapter = HabitsViewPagerAdapter(childFragmentManager, lifecycle, this)
+        viewPagerAdapter = HabitsViewPagerAdapter(childFragmentManager, lifecycle)
         binding.habitsViewPager.offscreenPageLimit = 2
         binding.habitsViewPager.adapter = viewPagerAdapter
         TabLayoutMediator(binding.habitsTabLayout, binding.habitsViewPager) { tab, position ->

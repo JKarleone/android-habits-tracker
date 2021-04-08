@@ -14,7 +14,7 @@ import com.example.habitstracker.utils.HabitType
 
 private const val ARG_HABIT_TYPE = "habit_type"
 
-class HabitsFragment(private var itemClickListener: HabitAdapter.OnHabitItemListener) : Fragment() {
+class HabitsFragment : Fragment() {
 
     private var _binding: FragmentHabitsBinding? = null
     private val binding get() = _binding!!
@@ -50,7 +50,7 @@ class HabitsFragment(private var itemClickListener: HabitAdapter.OnHabitItemList
     }
 
     private fun initRecyclerView() {
-        habitAdapter = HabitAdapter(habits, itemClickListener)
+        habitAdapter = HabitAdapter(habits, parentFragment as HabitAdapter.OnHabitItemListener)
         binding.habitsRecyclerView.adapter = habitAdapter
         layoutManager = LinearLayoutManager(requireContext())
         binding.habitsRecyclerView.layoutManager = layoutManager
@@ -74,8 +74,8 @@ class HabitsFragment(private var itemClickListener: HabitAdapter.OnHabitItemList
          * @return A new instance of fragment HabitsFragment.
          */
         @JvmStatic
-        fun newInstance(habitType: HabitType, itemClickListener: HabitAdapter.OnHabitItemListener) =
-            HabitsFragment(itemClickListener).apply {
+        fun newInstance(habitType: HabitType) =
+            HabitsFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_HABIT_TYPE, habitType)
                 }

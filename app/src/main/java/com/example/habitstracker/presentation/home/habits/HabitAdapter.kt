@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.R
 import com.example.habitstracker.domain.model.Habit
 
-class HabitAdapter(private var habits: MutableList<Habit>,
-                   private val itemClickListener: OnHabitItemListener
+class HabitAdapter(
+        private var habits: MutableList<Habit>,
+        private val itemClickListener: OnHabitItemListener
 ) : RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
