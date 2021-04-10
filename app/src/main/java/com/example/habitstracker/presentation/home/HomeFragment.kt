@@ -9,9 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.App
 import com.example.habitstracker.R
-import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHomeBinding
-import com.example.habitstracker.domain.model.Habit
 import com.example.habitstracker.presentation.home.habiteditor.HabitEditorFragment
 import com.example.habitstracker.presentation.home.habits.HabitsFragment
 import com.example.habitstracker.utils.HabitType
@@ -42,7 +40,7 @@ class HomeFragment : Fragment() {
 
         binding.addNewHabitButton.setOnClickListener(this::onAddNewHabitButtonClicked)
 
-        setFragmentResultListeners()
+        setHabitsUpdateListener()
 
         return binding.root
     }
@@ -59,27 +57,13 @@ class HomeFragment : Fragment() {
         navController.navigate(action)
     }
 
-    private fun setFragmentResultListeners() {
-
-        setFragmentResultListener(HabitEditorFragment.REQUEST_KEY_NEW_HABIT) { _, bundle ->
-            val newHabit = bundle.getSerializable(HabitEditorFragment.EXTRA_HABIT) as Habit
-
-            Data.addNewHabit(newHabit)
-            val fragment = getHabitsFragmentByHabitType(newHabit.type)
-            fragment?.updateRecyclerViewData()
-        }
-
-        setFragmentResultListener(HabitEditorFragment.REQUEST_KEY_EDIT_HABIT) { _, bundle ->
-            val habit = bundle.getSerializable(HabitEditorFragment.EXTRA_HABIT) as Habit
-
-            Data.updateHabit(habit)
-
+    private fun setHabitsUpdateListener() {
+        setFragmentResultListener(HabitEditorFragment.REQUEST_KEY_UPDATE_HABIT) { _, bundle ->
             val fragment1 = getHabitsFragmentByHabitType(HabitType.Good)
             val fragment2 = getHabitsFragmentByHabitType(HabitType.Bad)
             fragment1?.updateRecyclerViewData()
             fragment2?.updateRecyclerViewData()
         }
-
     }
 
     private fun getHabitsFragmentByHabitType(habitType: HabitType) : HabitsFragment? {

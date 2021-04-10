@@ -7,19 +7,26 @@ object Data {
 
     private val habits = ArrayList<Habit>()
 
-    fun addNewHabit(habit: Habit) {
-        habits.add(habit)
+    fun saveHabit(habit: Habit) {
+        val index = indexOf(habit)
+
+        if (index == -1)
+            habits.add(habit)
+        else
+            habits[index] = habit
     }
 
     fun removeHabit(habit: Habit) {
         habits.remove(habit)
     }
 
-    fun updateHabit(newHabit: Habit) {
+    private fun indexOf(habit: Habit): Int {
+        var index = -1
         for (i in habits.indices) {
-            if (habits[i].id == newHabit.id)
-                habits[i] = newHabit
+            if (habits[i].id == habit.id)
+                index = i
         }
+        return index
     }
 
     fun getHabitsByType(habitType: HabitType): ArrayList<Habit> =

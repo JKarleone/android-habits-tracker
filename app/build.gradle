@@ -2,11 +2,12 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
 }
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.habitstracker"
@@ -34,6 +35,10 @@ android {
 
     buildFeatures {
         viewBinding true
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
