@@ -3,6 +3,7 @@ package com.example.habitstracker.presentation.home.habiteditor
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
 import com.google.android.material.textfield.TextInputLayout
 
+
 class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
 
     private var _binding: FragmentHabitEditorBinding? = null
@@ -42,10 +44,12 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     private val viewModel: HabitEditorViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_habit_editor, container, false)
+
+        fixEditTextName()
 
         initViewModel()
         setAdapters()
@@ -66,6 +70,11 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
         super.onDestroyView()
 
         _binding = null
+    }
+
+    private fun fixEditTextName() {
+        // Make first letter uppercase
+        binding.editTextName.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
     }
 
     private fun initViewModel() {
@@ -136,10 +145,10 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
         }
         else
             binding.selectedHabitColor.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.gray
-                )
+                    ContextCompat.getColor(
+                            requireContext(),
+                            R.color.gray
+                    )
             )
     }
 
@@ -223,9 +232,9 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private data class InputView(
-        val inputView: EditText,
-        val errorLayout: TextInputLayout,
-        val errorStringResource: Int
+            val inputView: EditText,
+            val errorLayout: TextInputLayout,
+            val errorStringResource: Int
     )
 
     companion object {
