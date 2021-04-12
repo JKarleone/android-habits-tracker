@@ -48,5 +48,7 @@
 
     <string name="view_pager_good_habits_header">Good</string>
     <string name="view_pager_bad_habits_header">Bad</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="search">Search</string>
 
 </resources>

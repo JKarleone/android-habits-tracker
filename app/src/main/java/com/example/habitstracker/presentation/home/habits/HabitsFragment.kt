@@ -49,6 +49,10 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
             updateRecyclerViewData()
         })
 
+        viewModel.searchSubstring.observe(viewLifecycleOwner, {
+            updateRecyclerViewData()
+        })
+
         return binding.root
     }
 

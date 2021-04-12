@@ -9,6 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.App
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHomeBinding
+import com.example.habitstracker.utils.Util.Companion.dpToPx
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -25,9 +27,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         viewPagerAdapter = HabitsViewPagerAdapter(childFragmentManager, lifecycle)
-        binding.habitsViewPager.offscreenPageLimit = 2
-        binding.habitsViewPager.adapter = viewPagerAdapter
-        TabLayoutMediator(binding.habitsTabLayout, binding.habitsViewPager) { tab, position ->
+        binding.habitsList.habitsViewPager.offscreenPageLimit = 2
+        binding.habitsList.habitsViewPager.adapter = viewPagerAdapter
+        TabLayoutMediator(binding.habitsList.habitsTabLayout, binding.habitsList.habitsViewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> App.applicationContext().getString(R.string.view_pager_good_habits_header)
                 else -> App.applicationContext().getString(R.string.view_pager_bad_habits_header)
@@ -35,6 +37,8 @@ class HomeFragment : Fragment() {
         }.attach()
 
         binding.addNewHabitButton.setOnClickListener(this::onAddNewHabitButtonClicked)
+
+        initBottomSheet()
 
         return binding.root
     }
@@ -49,6 +53,13 @@ class HomeFragment : Fragment() {
         val navController = findNavController()
         val action = HomeFragmentDirections.actionHomeFragmentToHabitEditorFragment()
         navController.navigate(action)
+    }
+
+    private fun initBottomSheet() {
+        BottomSheetBehavior.from(binding.bottomSheet).apply {
+            peekHeight = 50.dpToPx
+            state = BottomSheetBehavior.STATE_COLLAPSED
+        }
     }
 
     companion object {
