@@ -5,14 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.App
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHomeBinding
-import com.example.habitstracker.presentation.home.habiteditor.HabitEditorFragment
-import com.example.habitstracker.presentation.home.habits.HabitsFragment
-import com.example.habitstracker.utils.HabitType
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -40,8 +36,6 @@ class HomeFragment : Fragment() {
 
         binding.addNewHabitButton.setOnClickListener(this::onAddNewHabitButtonClicked)
 
-        setHabitsUpdateListener()
-
         return binding.root
     }
 
@@ -55,20 +49,6 @@ class HomeFragment : Fragment() {
         val navController = findNavController()
         val action = HomeFragmentDirections.actionHomeFragmentToHabitEditorFragment()
         navController.navigate(action)
-    }
-
-    private fun setHabitsUpdateListener() {
-        setFragmentResultListener(HabitEditorFragment.REQUEST_KEY_UPDATE_HABIT) { _, bundle ->
-            val fragment1 = getHabitsFragmentByHabitType(HabitType.Good)
-            val fragment2 = getHabitsFragmentByHabitType(HabitType.Bad)
-            fragment1?.updateRecyclerViewData()
-            fragment2?.updateRecyclerViewData()
-        }
-    }
-
-    private fun getHabitsFragmentByHabitType(habitType: HabitType) : HabitsFragment? {
-        val fragmentTag = if (habitType == HabitType.Good) "f0" else "f1"
-        return childFragmentManager.findFragmentByTag(fragmentTag) as? HabitsFragment
     }
 
     companion object {

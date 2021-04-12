@@ -15,7 +15,6 @@ import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -165,7 +164,6 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     private fun onSaveHabitButtonClicked(view: View) {
         if (isAllFieldsFilled()) {
             viewModel.saveHabit()
-            setFragmentResult(REQUEST_KEY_UPDATE_HABIT, Bundle())
             val navController = findNavController()
             navController.popBackStack()
         }
@@ -238,8 +236,6 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     )
 
     companion object {
-
-        const val REQUEST_KEY_UPDATE_HABIT = "request_key_update_habit"
 
         private const val TAG = "FragmentHabitEditor"
 

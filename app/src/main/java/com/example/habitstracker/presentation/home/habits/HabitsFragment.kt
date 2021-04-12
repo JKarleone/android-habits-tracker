@@ -5,17 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHabitsBinding
 import com.example.habitstracker.domain.model.Habit
+import com.example.habitstracker.presentation.home.HabitsViewModel
 import com.example.habitstracker.presentation.home.HomeFragment
 import com.example.habitstracker.presentation.home.HomeFragmentDirections
 import com.example.habitstracker.utils.HabitType
-
-private const val ARG_HABIT_TYPE = "habit_type"
 
 class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
 
@@ -25,7 +24,10 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     private var habitType: HabitType? = null
     private lateinit var habitsAdapter: HabitsAdapter
     private lateinit var layoutManager: LinearLayoutManager
-    private var habits = ArrayList<Habit>()
+
+    private val viewModel: HabitsViewModel by viewModels(
+            ownerProducer = { requireParentFragment() }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +45,10 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
         initRecyclerView()
         updateRecyclerViewData()
 
+        viewModel.habits.observe(viewLifecycleOwner, {
+            updateRecyclerViewData()
+        })
+
         return binding.root
     }
 
@@ -53,16 +59,16 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     }
 
     private fun initRecyclerView() {
-        habitsAdapter = HabitsAdapter(habits, this)
+        habitsAdapter = HabitsAdapter(mutableListOf(), this)
         binding.habitsRecyclerView.adapter = habitsAdapter
         layoutManager = LinearLayoutManager(requireContext())
         binding.habitsRecyclerView.layoutManager = layoutManager
         binding.habitsRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
-    fun updateRecyclerViewData() {
+    private fun updateRecyclerViewData() {
         habitType?.let {
-            habits = Data.getHabitsByType(it)
+            val habits = viewModel.getHabitsByType(habitType!!)
             habitsAdapter.setHabits(habits)
         }
     }
@@ -90,6 +96,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
                 }
             }
 
+        private const val ARG_HABIT_TYPE = "habit_type"
         private const val TAG = "FragmentHabits"
     }
 }
