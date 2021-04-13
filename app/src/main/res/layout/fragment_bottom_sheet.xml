@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_bottom_sheet"
-    android:orientation="vertical"
     android:paddingHorizontal="16dp"
-    android:paddingTop="50dp"
-    android:paddingBottom="20dp"
+    android:paddingTop="60dp"
+    android:paddingBottom="25dp"
     tools:context=".presentation.home.BottomSheetFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -17,7 +16,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/search"
         app:startIconDrawable="@drawable/ic_search"
-        app:boxBackgroundColor="@color/purple_50">
+        app:boxBackgroundColor="@color/purple_50"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextSearch"
@@ -27,4 +27,55 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textViewSortBy"
+        android:text="@string/sort_by"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutSearch" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupSortByField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:singleSelection="true"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSortBy"
+        app:layout_constraintLeft_toLeftOf="parent" >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipName"
+            android:text="@string/sort_by_name"
+            android:checked="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPriority"
+            android:text="@string/sort_by_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipColor"
+            android:text="@string/sort_by_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipFrequency"
+            android:text="@string/sort_by_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

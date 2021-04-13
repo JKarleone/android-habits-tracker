@@ -86,7 +86,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
         val priorityAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, prioritiesItems)
         binding.editTextPriority.setAdapter(priorityAdapter)
         binding.editTextPriority.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 viewModel.priority = HabitPriority.getHabitPriorityByString(prioritiesItems[position])
             }
 
@@ -94,7 +94,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
         val intervalAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, intervalItems)
         binding.editTextInterval.setAdapter(intervalAdapter)
         binding.editTextInterval.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 viewModel.frequency = HabitFrequency.getHabitFrequencyByString(intervalItems[position])
             }
     }

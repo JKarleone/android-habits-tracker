@@ -53,6 +53,10 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
             updateRecyclerViewData()
         })
 
+        viewModel.sortField.observe(viewLifecycleOwner, {
+            updateRecyclerViewData()
+        })
+
         return binding.root
     }
 

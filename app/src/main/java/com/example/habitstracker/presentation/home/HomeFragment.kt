@@ -1,9 +1,11 @@
 package com.example.habitstracker.presentation.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.App
@@ -56,10 +58,25 @@ class HomeFragment : Fragment() {
     }
 
     private fun initBottomSheet() {
-        BottomSheetBehavior.from(binding.bottomSheet).apply {
-            peekHeight = 50.dpToPx
+        val bottomSheet = BottomSheetBehavior.from(binding.bottomSheet).apply {
+            peekHeight = 60.dpToPx
             state = BottomSheetBehavior.STATE_COLLAPSED
         }
+        bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    val viewInFocus = activity?.currentFocus
+                    val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    // Hide keyboard
+                    inputMethodManager?.hideSoftInputFromWindow(viewInFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                    // Clear focus of last input field
+                    viewInFocus?.clearFocus()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        })
     }
 
     companion object {

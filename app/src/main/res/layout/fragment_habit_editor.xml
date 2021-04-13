@@ -169,7 +169,7 @@
                     <TextView
                         android:id="@+id/radioGroupError"
                         android:textAppearance="?attr/textAppearanceCaption"
-                        android:textColor="@color/error_red"
+                        android:textColor="?attr/colorError"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"/>
@@ -202,7 +202,7 @@
                     <TextView
                         android:id="@+id/selectedHabitColorError"
                         android:textAppearance="?attr/textAppearanceCaption"
-                        android:textColor="@color/error_red"
+                        android:textColor="?attr/colorError"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
