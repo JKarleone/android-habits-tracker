@@ -1,11 +1,15 @@
 package com.example.habitstracker.presentation.home
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.habitstracker.R
@@ -25,8 +29,8 @@ class BottomSheetFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
 
+        setSortOrderConfig()
         configureSearchEditText()
-
         setChipChangeListener()
 
         return binding.root
@@ -36,6 +40,26 @@ class BottomSheetFragment : Fragment() {
         super.onDestroyView()
 
         _binding = null
+    }
+
+    private fun setSortOrderConfig() {
+        binding.imageButtonSortByAscending.setOnClickListener(this::onImageButtonSortOrderClicked)
+        binding.imageButtonSortByDescending.setOnClickListener(this::onImageButtonSortOrderClicked)
+
+        viewModel.sortByAscending.observe(viewLifecycleOwner, {
+            val primaryColor = TypedValue()
+            requireActivity().theme.resolveAttribute(R.attr.colorPrimary, primaryColor, true)
+            val disabledColor = ContextCompat.getColor(requireContext(), R.color.gray_700)
+
+            ImageViewCompat.setImageTintList(
+                binding.imageButtonSortByAscending,
+                ColorStateList.valueOf(if (it) primaryColor.data else disabledColor)
+            )
+            ImageViewCompat.setImageTintList(
+                binding.imageButtonSortByDescending,
+                ColorStateList.valueOf(if (!it) primaryColor.data else disabledColor)
+            )
+        })
     }
 
     private fun configureSearchEditText() {
@@ -71,6 +95,13 @@ class BottomSheetFragment : Fragment() {
                     group.check(R.id.chipName)
                 }
             }
+        }
+    }
+
+    private fun onImageButtonSortOrderClicked(view: View) {
+        when (view.id) {
+            R.id.imageButtonSortByAscending -> viewModel.sortByAscending.value = true
+            R.id.imageButtonSortByDescending -> viewModel.sortByAscending.value = false
         }
     }
 

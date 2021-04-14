@@ -11,7 +11,7 @@ object SortUtil {
             this.getSortedListByDescending(sortField)
     }
 
-    fun ArrayList<Habit>.getSortedListByAscending(sortField: SortField): ArrayList<Habit> {
+    private fun ArrayList<Habit>.getSortedListByAscending(sortField: SortField): ArrayList<Habit> {
         val list = this
         when (sortField) {
             SortField.NAME -> list.sortBy { it.name }
@@ -22,7 +22,7 @@ object SortUtil {
         return list
     }
 
-    fun ArrayList<Habit>.getSortedListByDescending(sortField: SortField): ArrayList<Habit> {
+    private fun ArrayList<Habit>.getSortedListByDescending(sortField: SortField): ArrayList<Habit> {
         val list = this
         when (sortField) {
             SortField.NAME -> list.sortByDescending { it.name }

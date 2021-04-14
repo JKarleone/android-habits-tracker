@@ -45,17 +45,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
         initRecyclerView()
         updateRecyclerViewData()
 
-        viewModel.habits.observe(viewLifecycleOwner, {
-            updateRecyclerViewData()
-        })
-
-        viewModel.searchSubstring.observe(viewLifecycleOwner, {
-            updateRecyclerViewData()
-        })
-
-        viewModel.sortField.observe(viewLifecycleOwner, {
-            updateRecyclerViewData()
-        })
+        setObservers()
 
         return binding.root
     }
@@ -72,6 +62,24 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
         layoutManager = LinearLayoutManager(requireContext())
         binding.habitsRecyclerView.layoutManager = layoutManager
         binding.habitsRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+    }
+
+    private fun setObservers() {
+        viewModel.habits.observe(viewLifecycleOwner, {
+            updateRecyclerViewData()
+        })
+
+        viewModel.searchSubstring.observe(viewLifecycleOwner, {
+            updateRecyclerViewData()
+        })
+
+        viewModel.sortField.observe(viewLifecycleOwner, {
+            updateRecyclerViewData()
+        })
+
+        viewModel.sortByAscending.observe(viewLifecycleOwner, {
+            updateRecyclerViewData()
+        })
     }
 
     private fun updateRecyclerViewData() {
