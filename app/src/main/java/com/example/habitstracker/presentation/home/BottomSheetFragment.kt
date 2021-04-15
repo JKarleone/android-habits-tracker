@@ -2,14 +2,13 @@ package com.example.habitstracker.presentation.home
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.habitstracker.R
@@ -25,12 +24,14 @@ class BottomSheetFragment : Fragment() {
         ownerProducer = { requireParentFragment() }
     )
 
+    private var lastCheckedChipView = R.id.chipName
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        _binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_bottom_sheet, container, false)
+        binding.viewModel = viewModel
 
         setSortOrderConfig()
-        configureSearchEditText()
         setChipChangeListener()
 
         return binding.root
@@ -62,37 +63,27 @@ class BottomSheetFragment : Fragment() {
         })
     }
 
-    private fun configureSearchEditText() {
-        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.searchSubstring.value = s?.toString() ?: ""
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
-    }
-
     private fun setChipChangeListener() {
         binding.chipGroupSortByField.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.chipName -> {
                     viewModel.sortField.value = SortField.NAME
+                    lastCheckedChipView = R.id.chipName
                 }
                 R.id.chipPriority -> {
                     viewModel.sortField.value = SortField.PRIORITY
+                    lastCheckedChipView = R.id.chipPriority
                 }
                 R.id.chipColor -> {
                     viewModel.sortField.value = SortField.COLOR
+                    lastCheckedChipView = R.id.chipColor
                 }
                 R.id.chipFrequency -> {
                     viewModel.sortField.value = SortField.FREQUENCY
+                    lastCheckedChipView = R.id.chipFrequency
                 }
                 else -> {
-                    group.check(R.id.chipName)
+                    group.check(lastCheckedChipView)
                 }
             }
         }
