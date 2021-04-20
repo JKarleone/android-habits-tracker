@@ -1,28 +1,39 @@
 package com.example.habitstracker.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.habitstracker.domain.model.Habit
-import com.example.habitstracker.utils.HabitType
 
 object Data {
 
-    private val habits = ArrayList<Habit>()
+    private val _habits = ArrayList<Habit>()
+    private val mutableHabits = MutableLiveData(_habits)
+    val habits: LiveData<ArrayList<Habit>> = mutableHabits
 
-    fun addNewHabit(habit: Habit) {
-        habits.add(habit)
+    fun saveHabit(habit: Habit) {
+        val index = indexOf(habit)
+
+        if (index == -1)
+            _habits.add(habit)
+        else
+            _habits[index] = habit
+
+        mutableHabits.value = _habits
     }
 
     fun removeHabit(habit: Habit) {
-        habits.remove(habit)
+        _habits.remove(habit)
+
+        mutableHabits.value = _habits
     }
 
-    fun updateHabit(newHabit: Habit) {
-        for (i in habits.indices) {
-            if (habits[i].id == newHabit.id)
-                habits[i] = newHabit
+    private fun indexOf(habit: Habit): Int {
+        var index = -1
+        for (i in _habits.indices) {
+            if (_habits[i].id == habit.id)
+                index = i
         }
+        return index
     }
-
-    fun getHabitsByType(habitType: HabitType): ArrayList<Habit> =
-        ArrayList(habits.filter { it.type == habitType })
 
 }

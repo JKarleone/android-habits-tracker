@@ -48,5 +48,12 @@
 
     <string name="view_pager_good_habits_header">Good</string>
     <string name="view_pager_bad_habits_header">Bad</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="search">Search</string>
+    <string name="sort_by">Sort by</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_priority">Priority</string>
+    <string name="sort_by_color">Color</string>
+    <string name="sort_by_frequency">Frequency</string>
 
 </resources>

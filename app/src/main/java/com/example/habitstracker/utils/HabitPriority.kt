@@ -4,10 +4,10 @@ import com.example.habitstracker.App
 import com.example.habitstracker.R
 import java.io.Serializable
 
-enum class HabitPriority(val resourceId: Int) : Serializable {
-    High(R.string.habit_priority_high),
+enum class HabitPriority(private val resourceId: Int) : Serializable {
+    Low(R.string.habit_priority_low),
     Medium(R.string.habit_priority_medium),
-    Low(R.string.habit_priority_low);
+    High(R.string.habit_priority_high);
 
     override fun toString(): String {
         return App.applicationContext().getString(this.resourceId)

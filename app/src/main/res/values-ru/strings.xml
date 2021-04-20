@@ -37,5 +37,11 @@
     <string name="app_info">О приложении</string>
     <string name="view_pager_good_habits_header">Хорошие</string>
     <string name="view_pager_bad_habits_header">Плохие</string>
+    <string name="search">Поиск</string>
+    <string name="sort_by">Сортировать по</string>
+    <string name="sort_by_name">Названию</string>
+    <string name="sort_by_priority">Приоритету</string>
+    <string name="sort_by_color">Цвету</string>
+    <string name="sort_by_frequency">Частоте</string>
 
 </resources>

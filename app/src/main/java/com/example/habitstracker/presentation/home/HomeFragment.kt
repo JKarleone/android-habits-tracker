@@ -1,20 +1,18 @@
 package com.example.habitstracker.presentation.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.App
 import com.example.habitstracker.R
-import com.example.habitstracker.data.Data
 import com.example.habitstracker.databinding.FragmentHomeBinding
-import com.example.habitstracker.domain.model.Habit
-import com.example.habitstracker.presentation.home.habiteditor.HabitEditorFragment
-import com.example.habitstracker.presentation.home.habits.HabitsFragment
-import com.example.habitstracker.utils.HabitType
+import com.example.habitstracker.utils.Util.Companion.dpToPx
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -31,9 +29,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         viewPagerAdapter = HabitsViewPagerAdapter(childFragmentManager, lifecycle)
-        binding.habitsViewPager.offscreenPageLimit = 2
-        binding.habitsViewPager.adapter = viewPagerAdapter
-        TabLayoutMediator(binding.habitsTabLayout, binding.habitsViewPager) { tab, position ->
+        binding.habitsList.habitsViewPager.offscreenPageLimit = 2
+        binding.habitsList.habitsViewPager.adapter = viewPagerAdapter
+        TabLayoutMediator(binding.habitsList.habitsTabLayout, binding.habitsList.habitsViewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> App.applicationContext().getString(R.string.view_pager_good_habits_header)
                 else -> App.applicationContext().getString(R.string.view_pager_bad_habits_header)
@@ -42,7 +40,7 @@ class HomeFragment : Fragment() {
 
         binding.addNewHabitButton.setOnClickListener(this::onAddNewHabitButtonClicked)
 
-        setFragmentResultListeners()
+        initBottomSheet()
 
         return binding.root
     }
@@ -59,32 +57,26 @@ class HomeFragment : Fragment() {
         navController.navigate(action)
     }
 
-    private fun setFragmentResultListeners() {
-
-        setFragmentResultListener(HabitEditorFragment.REQUEST_KEY_NEW_HABIT) { _, bundle ->
-            val newHabit = bundle.getSerializable(HabitEditorFragment.EXTRA_HABIT) as Habit
-
-            Data.addNewHabit(newHabit)
-            val fragment = getHabitsFragmentByHabitType(newHabit.type)
-            fragment?.updateRecyclerViewData()
+    private fun initBottomSheet() {
+        val bottomSheet = BottomSheetBehavior.from(binding.bottomSheet).apply {
+            peekHeight = 60.dpToPx
+            state = BottomSheetBehavior.STATE_COLLAPSED
         }
+        bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    val viewInFocus = activity?.currentFocus
+                    val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    // Hide keyboard
+                    inputMethodManager?.hideSoftInputFromWindow(viewInFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                    // Clear focus of last input field
+                    viewInFocus?.clearFocus()
+                }
+            }
 
-        setFragmentResultListener(HabitEditorFragment.REQUEST_KEY_EDIT_HABIT) { _, bundle ->
-            val habit = bundle.getSerializable(HabitEditorFragment.EXTRA_HABIT) as Habit
-
-            Data.updateHabit(habit)
-
-            val fragment1 = getHabitsFragmentByHabitType(HabitType.Good)
-            val fragment2 = getHabitsFragmentByHabitType(HabitType.Bad)
-            fragment1?.updateRecyclerViewData()
-            fragment2?.updateRecyclerViewData()
-        }
-
-    }
-
-    private fun getHabitsFragmentByHabitType(habitType: HabitType) : HabitsFragment? {
-        val fragmentTag = if (habitType == HabitType.Good) "f0" else "f1"
-        return childFragmentManager.findFragmentByTag(fragmentTag) as? HabitsFragment
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        })
     }
 
     companion object {

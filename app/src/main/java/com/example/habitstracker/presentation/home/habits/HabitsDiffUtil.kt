@@ -18,12 +18,12 @@ class HabitsDiffUtil(
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return  oldList[oldItemPosition].name == newList[newItemPosition].name &&
-                oldList[oldItemPosition].description == newList[oldItemPosition].description &&
-                oldList[oldItemPosition].priority == newList[oldItemPosition].priority &&
-                oldList[oldItemPosition].type == newList[oldItemPosition].type &&
-                oldList[oldItemPosition].frequencyTimes == newList[oldItemPosition].frequencyTimes &&
-                oldList[oldItemPosition].frequency == newList[oldItemPosition].frequency &&
-                oldList[oldItemPosition].color == newList[oldItemPosition].color
+                oldList[oldItemPosition].description == newList[newItemPosition].description &&
+                oldList[oldItemPosition].priority == newList[newItemPosition].priority &&
+                oldList[oldItemPosition].type == newList[newItemPosition].type &&
+                oldList[oldItemPosition].frequencyTimes == newList[newItemPosition].frequencyTimes &&
+                oldList[oldItemPosition].frequency == newList[newItemPosition].frequency &&
+                oldList[oldItemPosition].color == newList[newItemPosition].color
     }
 
 }
