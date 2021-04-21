@@ -20,10 +20,11 @@ class HabitsViewModel : ViewModel() {
 
     var sortByAscending: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    fun getHabitsByType(habitType: HabitType): ArrayList<Habit> {
-        val filteredHabits = ArrayList(habits.value?.filter {
-            it.type == habitType && (it.name.contains(searchSubstring.value!!, true) || it.description.contains(searchSubstring.value!!, true))
-        } ?: emptyList() )
+    fun getHabitsByType(habitType: HabitType): MutableList<Habit> {
+        val filteredHabits = habits.value?.filter {
+            it.type == habitType &&
+            (it.name.contains(searchSubstring.value!!, true) || it.description.contains(searchSubstring.value!!, true))
+        }?.toMutableList() ?: mutableListOf()
         return filteredHabits.getSortedList(sortField.value!!, sortByAscending.value!!)
     }
 
