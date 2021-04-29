@@ -15,6 +15,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun habitDao(): HabitDao
 
     companion object {
+
+        private const val NAME = "habitstracker_db"
+
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
@@ -23,13 +26,14 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     App.applicationContext(),
                     AppDatabase::class.java,
-                    "habitstracker_db"
+                    NAME
                 ).allowMainThreadQueries().build()
                 INSTANCE = instance
 
                 return instance
             }
         }
+
     }
 
 }
