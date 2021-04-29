@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habitstracker.R
-import com.example.habitstracker.domain.model.Habit
+import com.example.habitstracker.data.entity.Habit
 
 class HabitsAdapter(
-        private var habits: MutableList<Habit>,
-        private val itemClickListener: OnHabitItemListener
+    private var habits: MutableList<Habit>,
+    private val itemClickListener: OnHabitItemListener
 ) : RecyclerView.Adapter<HabitsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

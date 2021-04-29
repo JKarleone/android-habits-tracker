@@ -11,4 +11,24 @@ enum class HabitType(val resourceId: Int) {
         return App.applicationContext().getString(this.resourceId)
     }
 
+    companion object {
+
+        fun getHabitTypeByString(resourceStr: String): HabitType? {
+            for (elem in values())
+                if (elem.toString() == resourceStr)
+                    return elem
+
+            return null
+        }
+
+        fun getHabitTypeByResourceId(resourceId: Int): HabitType? {
+            for (elem in values())
+                if (elem.resourceId == resourceId)
+                    return elem
+
+            return null
+        }
+
+    }
+
 }

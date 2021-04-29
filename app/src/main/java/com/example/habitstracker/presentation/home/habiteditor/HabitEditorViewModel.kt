@@ -1,13 +1,15 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
-import com.example.habitstracker.data.Data
-import com.example.habitstracker.domain.model.Habit
+import com.example.habitstracker.data.AppDatabase
+import com.example.habitstracker.data.entity.Habit
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
 
 class HabitEditorViewModel : ViewModel() {
+
+    private val habitDao by lazy { AppDatabase.getInstance().habitDao() }
 
     var name: String? = null
     var description: String? = null
@@ -16,7 +18,7 @@ class HabitEditorViewModel : ViewModel() {
     var frequencyTimes: Int? = null
     var frequency: HabitFrequency? = null
     var color: Int? = null
-    var id: Int? = null
+    var id: Long? = null
 
     fun setData(habit: Habit?) {
         name = habit?.name
@@ -32,7 +34,7 @@ class HabitEditorViewModel : ViewModel() {
     fun saveHabit() {
         if (isCorrectToSave()) {
             if (id == null)
-                Data.saveHabit(
+                habitDao.insert(
                     Habit(
                         name!!,
                         description!!,
@@ -44,7 +46,7 @@ class HabitEditorViewModel : ViewModel() {
                     )
                 )
             else
-                Data.saveHabit(
+                habitDao.update(
                     Habit(
                         name!!,
                         description!!,

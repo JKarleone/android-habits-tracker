@@ -24,6 +24,14 @@ enum class HabitFrequency(val resourceId: Int) : Serializable {
             return null
         }
 
+        fun getHabitFrequencyByResourceId(resourceId: Int): HabitFrequency? {
+            for (elem in values())
+                if (elem.resourceId == resourceId)
+                    return elem
+
+            return null
+        }
+
     }
 
 }

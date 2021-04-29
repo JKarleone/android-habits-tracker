@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.habitstracker.data.entity.Habit
 import com.example.habitstracker.databinding.FragmentHabitsBinding
-import com.example.habitstracker.domain.model.Habit
 import com.example.habitstracker.presentation.home.HabitsViewModel
 import com.example.habitstracker.presentation.home.HomeFragment
 import com.example.habitstracker.presentation.home.HomeFragmentDirections

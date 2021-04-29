@@ -2,15 +2,17 @@ package com.example.habitstracker.presentation.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.habitstracker.data.Data
-import com.example.habitstracker.domain.model.Habit
+import com.example.habitstracker.data.AppDatabase
+import com.example.habitstracker.data.entity.Habit
 import com.example.habitstracker.utils.HabitType
 import com.example.habitstracker.utils.SortField
 import com.example.habitstracker.utils.SortUtil.getSortedList
 
 class HabitsViewModel : ViewModel() {
 
-    val habits = Data.habits
+    private val habitDao = AppDatabase.getInstance().habitDao()
+
+    val habits = habitDao.getAll()
 
     var searchSubstring: MutableLiveData<String> = MutableLiveData("")
 
@@ -18,10 +20,11 @@ class HabitsViewModel : ViewModel() {
 
     var sortByAscending: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    fun getHabitsByType(habitType: HabitType): ArrayList<Habit> {
-        val filteredHabits = ArrayList(habits.value?.filter {
-            it.type == habitType && (it.name.contains(searchSubstring.value!!, true) || it.description.contains(searchSubstring.value!!, true))
-        } )
+    fun getHabitsByType(habitType: HabitType): MutableList<Habit> {
+        val filteredHabits = habits.value?.filter {
+            it.type == habitType &&
+            (it.name.contains(searchSubstring.value!!, true) || it.description.contains(searchSubstring.value!!, true))
+        }?.toMutableList() ?: mutableListOf()
         return filteredHabits.getSortedList(sortField.value!!, sortByAscending.value!!)
     }
 
