@@ -43,5 +43,6 @@
     <string name="sort_by_priority">Приоритету</string>
     <string name="sort_by_color">Цвету</string>
     <string name="sort_by_frequency">Частоте</string>
+    <string name="bottom_sheet_label">Поиск и фильтры</string>
 
 </resources>
