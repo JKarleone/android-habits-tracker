@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,7 +44,6 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
         _binding = FragmentHabitsBinding.inflate(layoutInflater, container, false)
 
         initRecyclerView()
-        updateRecyclerViewData()
 
         setObservers()
 
@@ -65,28 +65,18 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     }
 
     private fun setObservers() {
-        viewModel.habits.observe(viewLifecycleOwner, {
-            updateRecyclerViewData()
-        })
 
-        viewModel.searchSubstring.observe(viewLifecycleOwner, {
-            updateRecyclerViewData()
-        })
-
-        viewModel.sortField.observe(viewLifecycleOwner, {
-            updateRecyclerViewData()
-        })
-
-        viewModel.sortByAscending.observe(viewLifecycleOwner, {
-            updateRecyclerViewData()
-        })
-    }
-
-    private fun updateRecyclerViewData() {
-        habitType?.let {
-            val habits = viewModel.getHabitsByType(habitType!!)
-            habitsAdapter.setHabits(habits)
+        val habitsObserver = Observer<List<Habit>> {
+            habitsAdapter.setHabits(it.toMutableList())
         }
+
+        habitType?.let {
+            if (habitType == HabitType.Good)
+                viewModel.goodHabits.observe(viewLifecycleOwner, habitsObserver)
+            else
+                viewModel.badHabits.observe(viewLifecycleOwner, habitsObserver)
+        }
+
     }
 
     override fun onHabitItemClick(habit: Habit) {
