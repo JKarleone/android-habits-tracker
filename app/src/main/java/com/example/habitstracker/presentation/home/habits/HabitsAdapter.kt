@@ -44,7 +44,6 @@ class HabitsAdapter(
         private val name: TextView = view.findViewById(R.id.habitName)
         private val description: TextView = view.findViewById(R.id.habitDescription)
         private val color: ImageView = view.findViewById(R.id.selectedHabitColor)
-        private val type: TextView = view.findViewById(R.id.habitType)
         private val frequency: TextView = view.findViewById(R.id.habitFrequency)
         private val priority: TextView = view.findViewById(R.id.habitPriority)
 
@@ -52,7 +51,6 @@ class HabitsAdapter(
             name.text = habit.name
             description.text = habit.description
             color.setColorFilter(habit.color)
-            type.text = habit.type.toString()
             priority.text = habit.priority.toString()
 
             val countTimesString = view.resources.getQuantityString(R.plurals.plurals_frequency_times, habit.frequencyTimes, habit.frequencyTimes)

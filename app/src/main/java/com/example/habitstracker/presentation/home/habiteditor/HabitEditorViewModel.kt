@@ -1,11 +1,13 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.habitstracker.data.AppDatabase
 import com.example.habitstracker.data.entity.Habit
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
+import kotlinx.coroutines.launch
 
 class HabitEditorViewModel : ViewModel() {
 
@@ -33,31 +35,33 @@ class HabitEditorViewModel : ViewModel() {
 
     fun saveHabit() {
         if (isCorrectToSave()) {
-            if (id == null)
-                habitDao.insert(
-                    Habit(
-                        name!!,
-                        description!!,
-                        priority!!,
-                        type!!,
-                        frequencyTimes!!,
-                        frequency!!,
-                        color!!
+            viewModelScope.launch {
+                if (id == null)
+                    habitDao.insert(
+                            Habit(
+                                    name!!,
+                                    description!!,
+                                    priority!!,
+                                    type!!,
+                                    frequencyTimes!!,
+                                    frequency!!,
+                                    color!!
+                            )
                     )
-                )
-            else
-                habitDao.update(
-                    Habit(
-                        name!!,
-                        description!!,
-                        priority!!,
-                        type!!,
-                        frequencyTimes!!,
-                        frequency!!,
-                        color!!,
-                        id!!
+                else
+                    habitDao.update(
+                            Habit(
+                                    name!!,
+                                    description!!,
+                                    priority!!,
+                                    type!!,
+                                    frequencyTimes!!,
+                                    frequency!!,
+                                    color!!,
+                                    id!!
+                            )
                     )
-                )
+            }
         }
     }
 

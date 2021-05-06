@@ -11,12 +11,12 @@ interface HabitDao {
     fun getAll(): LiveData<List<Habit>>
 
     @Insert
-    fun insert(habit: Habit)
+    suspend fun insert(habit: Habit)
 
     @Delete
-    fun delete(habit: Habit)
+    suspend fun delete(habit: Habit)
 
     @Update
-    fun update(habit: Habit)
+    suspend fun update(habit: Habit)
 
 }
