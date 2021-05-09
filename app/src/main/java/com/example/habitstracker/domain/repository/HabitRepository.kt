@@ -11,4 +11,16 @@ class HabitRepository {
     fun getAllHabits(): LiveData<List<Habit>> =
             habitsDao.getAll()
 
+    suspend fun insertHabit(habit: Habit) {
+        habitsDao.insert(habit)
+    }
+
+    suspend fun updateHabit(habit: Habit) {
+        habitsDao.update(habit)
+    }
+
+    suspend fun deleteHabit(habit: Habit) {
+        habitsDao.delete(habit)
+    }
+
 }

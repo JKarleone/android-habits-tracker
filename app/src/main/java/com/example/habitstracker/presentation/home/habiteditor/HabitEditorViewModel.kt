@@ -2,8 +2,8 @@ package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.habitstracker.data.AppDatabase
 import com.example.habitstracker.data.entity.Habit
+import com.example.habitstracker.domain.repository.HabitRepository
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class HabitEditorViewModel : ViewModel() {
 
-    private val habitDao by lazy { AppDatabase.getInstance().habitDao() }
+    private val habitRepository = HabitRepository()
 
     var name: String? = null
     var description: String? = null
@@ -37,7 +37,7 @@ class HabitEditorViewModel : ViewModel() {
         if (isCorrectToSave()) {
             viewModelScope.launch {
                 if (id == null)
-                    habitDao.insert(
+                    habitRepository.insertHabit(
                             Habit(
                                     name!!,
                                     description!!,
@@ -49,7 +49,7 @@ class HabitEditorViewModel : ViewModel() {
                             )
                     )
                 else
-                    habitDao.update(
+                    habitRepository.updateHabit(
                             Habit(
                                     name!!,
                                     description!!,
