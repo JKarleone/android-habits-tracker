@@ -7,6 +7,7 @@ import com.example.habitstracker.data.entity.Habit
 import com.example.habitstracker.domain.network.Extensions.toHabit
 import com.example.habitstracker.domain.network.Extensions.toHabitModel
 import com.example.habitstracker.domain.network.RetrofitInstance
+import com.example.habitstracker.domain.network.model.HabitUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -43,7 +44,7 @@ class HabitRepository {
 
     suspend fun deleteHabit(habit: Habit) {
         habitsDao.delete(habit)
-//        habit.id?.let { habitApi.deleteHabit(habit.id.toString()) }
+        habit.id.let { habitApi.deleteHabit(HabitUID(habit.id)) }
     }
 
     companion object {

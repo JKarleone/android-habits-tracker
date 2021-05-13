@@ -17,6 +17,6 @@ interface HabitApi {
     suspend fun putHabit(@Body habit: HabitModel): Response<HabitUID>
 
     @DELETE("habit")
-    suspend fun deleteHabit(@Body uid: String)
+    suspend fun deleteHabit(@Body uid: HabitUID)
 
 }

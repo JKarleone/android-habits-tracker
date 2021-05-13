@@ -36,13 +36,15 @@ class MainActivity : AppCompatActivity() {
         setupProfileImage()
     }
 
-    fun setupProfileImage() {
+    private fun setupProfileImage() {
         val headerView = binding.navigationView.getHeaderView(0)
         val profileImage = headerView.findViewById<ImageView>(R.id.profileImageView)
 
         Glide
             .with(this)
             .load(PROFILE_IMAGE_URL)
+            .placeholder(R.mipmap.ic_launcher)
+            .error(R.drawable.ic_base_error)
             .fitCenter()
             .into(profileImage)
     }
