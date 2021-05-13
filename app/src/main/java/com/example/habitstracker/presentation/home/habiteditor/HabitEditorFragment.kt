@@ -1,13 +1,11 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -185,10 +183,10 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
 
     private fun clearFocus() {
         val viewInFocus = activity?.currentFocus
-        val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        // Hide keyboard
-        inputMethodManager?.hideSoftInputFromWindow(viewInFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-        // Clear focus of last input field
+//        val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+//        // Hide keyboard
+//        inputMethodManager?.hideSoftInputFromWindow(viewInFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+//        // Clear focus of last input field
         viewInFocus?.clearFocus()
     }
 

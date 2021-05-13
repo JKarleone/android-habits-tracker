@@ -1,12 +1,12 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.habitstracker.data.entity.Habit
 import com.example.habitstracker.domain.repository.HabitRepository
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class HabitEditorViewModel : ViewModel() {
@@ -20,7 +20,8 @@ class HabitEditorViewModel : ViewModel() {
     var frequencyTimes: Int? = null
     var frequency: HabitFrequency? = null
     var color: Int? = null
-    var id: Long? = null
+    var date: Int? = null
+    var id: String? = null
 
     fun setData(habit: Habit?) {
         name = habit?.name
@@ -30,12 +31,13 @@ class HabitEditorViewModel : ViewModel() {
         frequencyTimes = habit?.frequencyTimes
         frequency = habit?.frequency
         color = habit?.color
+        date = habit?.date
         id = habit?.id
     }
 
     fun saveHabit() {
         if (isCorrectToSave()) {
-            viewModelScope.launch {
+            GlobalScope.launch {
                 if (id == null)
                     habitRepository.insertHabit(
                             Habit(
@@ -45,7 +47,9 @@ class HabitEditorViewModel : ViewModel() {
                                     type!!,
                                     frequencyTimes!!,
                                     frequency!!,
-                                    color!!
+                                    color!!,
+                                    0,
+                                ""
                             )
                     )
                 else
@@ -58,6 +62,7 @@ class HabitEditorViewModel : ViewModel() {
                                     frequencyTimes!!,
                                     frequency!!,
                                     color!!,
+                                    date!!,
                                     id!!
                             )
                     )
