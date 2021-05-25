@@ -16,6 +16,8 @@ data class Habit(
         var frequencyTimes: Int,
         var frequency: HabitFrequency?,
         var color: Int,
-        @PrimaryKey(autoGenerate = true) var id: Long? = null
+        var date: Int,
+        @PrimaryKey
+        var id: String
 ) : Serializable
 

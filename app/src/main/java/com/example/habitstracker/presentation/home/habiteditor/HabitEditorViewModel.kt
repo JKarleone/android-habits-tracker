@@ -1,17 +1,17 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.habitstracker.data.AppDatabase
 import com.example.habitstracker.data.entity.Habit
+import com.example.habitstracker.domain.repository.HabitRepository
 import com.example.habitstracker.utils.HabitFrequency
 import com.example.habitstracker.utils.HabitPriority
 import com.example.habitstracker.utils.HabitType
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class HabitEditorViewModel : ViewModel() {
 
-    private val habitDao by lazy { AppDatabase.getInstance().habitDao() }
+    private val habitRepository = HabitRepository()
 
     var name: String? = null
     var description: String? = null
@@ -20,7 +20,8 @@ class HabitEditorViewModel : ViewModel() {
     var frequencyTimes: Int? = null
     var frequency: HabitFrequency? = null
     var color: Int? = null
-    var id: Long? = null
+    var date: Int? = null
+    var id: String? = null
 
     fun setData(habit: Habit?) {
         name = habit?.name
@@ -30,26 +31,15 @@ class HabitEditorViewModel : ViewModel() {
         frequencyTimes = habit?.frequencyTimes
         frequency = habit?.frequency
         color = habit?.color
+        date = habit?.date
         id = habit?.id
     }
 
     fun saveHabit() {
         if (isCorrectToSave()) {
-            viewModelScope.launch {
+            GlobalScope.launch {
                 if (id == null)
-                    habitDao.insert(
-                            Habit(
-                                    name!!,
-                                    description!!,
-                                    priority!!,
-                                    type!!,
-                                    frequencyTimes!!,
-                                    frequency!!,
-                                    color!!
-                            )
-                    )
-                else
-                    habitDao.update(
+                    habitRepository.insertHabit(
                             Habit(
                                     name!!,
                                     description!!,
@@ -58,6 +48,21 @@ class HabitEditorViewModel : ViewModel() {
                                     frequencyTimes!!,
                                     frequency!!,
                                     color!!,
+                                    0,
+                                ""
+                            )
+                    )
+                else
+                    habitRepository.updateHabit(
+                            Habit(
+                                    name!!,
+                                    description!!,
+                                    priority!!,
+                                    type!!,
+                                    frequencyTimes!!,
+                                    frequency!!,
+                                    color!!,
+                                    date!!,
                                     id!!
                             )
                     )
