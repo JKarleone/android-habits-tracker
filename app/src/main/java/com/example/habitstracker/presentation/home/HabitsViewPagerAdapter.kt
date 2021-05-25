@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.domain.utils.HabitType
 import com.example.habitstracker.presentation.home.habits.HabitsFragment
-import com.example.habitstracker.utils.HabitType
 
 class HabitsViewPagerAdapter (
     fm: FragmentManager,

@@ -1,24 +1,22 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
-import com.example.habitstracker.data.entity.Habit
-import com.example.habitstracker.domain.repository.HabitRepository
-import com.example.habitstracker.utils.HabitFrequency
-import com.example.habitstracker.utils.HabitPriority
-import com.example.habitstracker.utils.HabitType
+import com.example.data.repository.HabitRepositoryImpl
+import com.example.domain.Habit
+import com.example.habitstracker.App
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class HabitEditorViewModel : ViewModel() {
 
-    private val habitRepository = HabitRepository()
+    private val habitRepository = HabitRepositoryImpl(App.applicationContext())
 
     var name: String? = null
     var description: String? = null
-    var priority: HabitPriority? = null
-    var type: HabitType? = null
+    var priority: com.example.domain.utils.HabitPriority? = null
+    var type: com.example.domain.utils.HabitType? = null
     var frequencyTimes: Int? = null
-    var frequency: HabitFrequency? = null
+    var frequency: com.example.domain.utils.HabitFrequency? = null
     var color: Int? = null
     var date: Int? = null
     var id: String? = null
@@ -40,31 +38,31 @@ class HabitEditorViewModel : ViewModel() {
             GlobalScope.launch {
                 if (id == null)
                     habitRepository.insertHabit(
-                            Habit(
-                                    name!!,
-                                    description!!,
-                                    priority!!,
-                                    type!!,
-                                    frequencyTimes!!,
-                                    frequency!!,
-                                    color!!,
-                                    0,
-                                ""
-                            )
+                        Habit(
+                            name!!,
+                            description!!,
+                            priority!!,
+                            type!!,
+                            frequencyTimes!!,
+                            frequency!!,
+                            color!!,
+                            0,
+                            ""
+                        )
                     )
                 else
                     habitRepository.updateHabit(
-                            Habit(
-                                    name!!,
-                                    description!!,
-                                    priority!!,
-                                    type!!,
-                                    frequencyTimes!!,
-                                    frequency!!,
-                                    color!!,
-                                    date!!,
-                                    id!!
-                            )
+                        Habit(
+                            name!!,
+                            description!!,
+                            priority!!,
+                            type!!,
+                            frequencyTimes!!,
+                            frequency!!,
+                            color!!,
+                            date!!,
+                            id!!
+                        )
                     )
             }
         }

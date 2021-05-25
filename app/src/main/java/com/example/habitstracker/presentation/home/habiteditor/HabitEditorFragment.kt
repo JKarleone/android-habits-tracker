@@ -18,13 +18,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.domain.utils.HabitFrequency
+import com.example.domain.utils.HabitPriority
+import com.example.domain.utils.HabitType
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitEditorBinding
+import com.example.habitstracker.presentation.home.Extensions.getString
+import com.example.habitstracker.presentation.home.Extensions.toHabitFrequency
+import com.example.habitstracker.presentation.home.Extensions.toHabitPriority
 import com.example.habitstracker.presentation.main.MainActivity
 import com.example.habitstracker.utils.ColorPicker
-import com.example.habitstracker.utils.HabitFrequency
-import com.example.habitstracker.utils.HabitPriority
-import com.example.habitstracker.utils.HabitType
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -82,20 +85,20 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun setAdapters() {
-        prioritiesItems = HabitPriority.values().map { it.toString() }
+        prioritiesItems = HabitPriority.values().map { it.getString() }
         val priorityAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, prioritiesItems)
         binding.editTextPriority.setAdapter(priorityAdapter)
         binding.editTextPriority.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.priority = HabitPriority.getHabitPriorityByString(prioritiesItems[position])
+                viewModel.priority = prioritiesItems[position].toHabitPriority()
             }
 
-        intervalItems = HabitFrequency.values().map { it.toString() }
+        intervalItems = HabitFrequency.values().map { it.getString() }
         val intervalAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, intervalItems)
         binding.editTextInterval.setAdapter(intervalAdapter)
         binding.editTextInterval.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.frequency = HabitFrequency.getHabitFrequencyByString(intervalItems[position])
+                viewModel.frequency = intervalItems[position].toHabitFrequency()
             }
     }
 

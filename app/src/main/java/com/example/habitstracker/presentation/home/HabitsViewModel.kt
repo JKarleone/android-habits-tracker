@@ -1,16 +1,19 @@
 package com.example.habitstracker.presentation.home
 
 import androidx.lifecycle.*
-import com.example.habitstracker.data.entity.Habit
-import com.example.habitstracker.domain.repository.HabitRepository
-import com.example.habitstracker.utils.HabitType
+import com.example.data.repository.HabitRepositoryImpl
+import com.example.domain.Habit
+import com.example.domain.HabitInteractor
+import com.example.domain.utils.HabitType
+import com.example.habitstracker.App
 import com.example.habitstracker.utils.SortField
 import com.example.habitstracker.utils.SortUtil.getSortedList
 import kotlinx.coroutines.launch
 
 class HabitsViewModel : ViewModel() {
 
-    private val habitRepository = HabitRepository()
+    private val habitRepository = HabitRepositoryImpl(App.applicationContext())
+    private val habitInteractor = HabitInteractor(habitRepository)
 
     var searchSubstring: MutableLiveData<String> = MutableLiveData("")
 
@@ -18,7 +21,7 @@ class HabitsViewModel : ViewModel() {
 
     var sortByAscending: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    private val habits = habitRepository.getAllHabits().asLiveData()
+    private val habits = habitInteractor.getAllHabits().asLiveData()
 
     val goodHabits: MediatorLiveData<List<Habit>> = MediatorLiveData()
     val badHabits: MediatorLiveData<List<Habit>> = MediatorLiveData()
@@ -37,7 +40,7 @@ class HabitsViewModel : ViewModel() {
         badHabits.addSource(sortByAscending, observer)
 
         viewModelScope.launch {
-            habitRepository.updateHabitsByServer()
+            habitInteractor.updateHabitsByServer()
         }
     }
 

@@ -7,8 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.Habit
 import com.example.habitstracker.R
-import com.example.habitstracker.data.entity.Habit
+import com.example.habitstracker.presentation.home.Extensions.getString
 
 class HabitsAdapter(
     private var habits: MutableList<Habit>,
@@ -54,7 +55,7 @@ class HabitsAdapter(
             priority.text = habit.priority.toString()
 
             val countTimesString = view.resources.getQuantityString(R.plurals.plurals_frequency_times, habit.frequencyTimes, habit.frequencyTimes)
-            val frequencyString = habit.frequency.toString()
+            val frequencyString = habit.frequency.getString()
 
             frequency.text = "$countTimesString $frequencyString"
         }

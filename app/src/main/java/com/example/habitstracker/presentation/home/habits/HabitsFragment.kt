@@ -10,19 +10,18 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.habitstracker.data.entity.Habit
+import com.example.domain.Habit
 import com.example.habitstracker.databinding.FragmentHabitsBinding
 import com.example.habitstracker.presentation.home.HabitsViewModel
 import com.example.habitstracker.presentation.home.HomeFragment
 import com.example.habitstracker.presentation.home.HomeFragmentDirections
-import com.example.habitstracker.utils.HabitType
 
 class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
 
     private var _binding: FragmentHabitsBinding? = null
     private val binding get() = _binding!!
 
-    private var habitType: HabitType? = null
+    private var habitType: com.example.domain.utils.HabitType? = null
     private lateinit var habitsAdapter: HabitsAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
@@ -33,7 +32,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            habitType = it.getSerializable(ARG_HABIT_TYPE) as? HabitType
+            habitType = it.getSerializable(ARG_HABIT_TYPE) as? com.example.domain.utils.HabitType
         }
     }
 
@@ -71,7 +70,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
         }
 
         habitType?.let {
-            if (habitType == HabitType.Good)
+            if (habitType == com.example.domain.utils.HabitType.Good)
                 viewModel.goodHabits.observe(viewLifecycleOwner, habitsObserver)
             else
                 viewModel.badHabits.observe(viewLifecycleOwner, habitsObserver)
@@ -95,7 +94,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
          * @return A new instance of fragment HabitsFragment.
          */
         @JvmStatic
-        fun newInstance(habitType: HabitType) =
+        fun newInstance(habitType: com.example.domain.utils.HabitType) =
             HabitsFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_HABIT_TYPE, habitType)
