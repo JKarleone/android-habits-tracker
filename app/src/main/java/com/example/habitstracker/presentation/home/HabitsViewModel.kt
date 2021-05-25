@@ -18,7 +18,7 @@ class HabitsViewModel : ViewModel() {
 
     var sortByAscending: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    private val habits = habitRepository.getAllHabits()
+    private val habits = habitRepository.getAllHabits().asLiveData()
 
     val goodHabits: MediatorLiveData<List<Habit>> = MediatorLiveData()
     val badHabits: MediatorLiveData<List<Habit>> = MediatorLiveData()

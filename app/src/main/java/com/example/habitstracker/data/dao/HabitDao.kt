@@ -1,14 +1,14 @@
 package com.example.habitstracker.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.habitstracker.data.entity.Habit
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitDao {
 
     @Query("SELECT * FROM habits")
-    fun getAll(): LiveData<List<Habit>>
+    fun getAll(): Flow<List<Habit>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(habit: Habit)

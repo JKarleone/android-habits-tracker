@@ -1,7 +1,6 @@
 package com.example.habitstracker.domain.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import com.example.habitstracker.data.AppDatabase
 import com.example.habitstracker.data.entity.Habit
 import com.example.habitstracker.domain.network.Extensions.toHabit
@@ -9,6 +8,7 @@ import com.example.habitstracker.domain.network.Extensions.toHabitModel
 import com.example.habitstracker.domain.network.RetrofitInstance
 import com.example.habitstracker.domain.network.model.HabitUID
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class HabitRepository {
@@ -16,7 +16,7 @@ class HabitRepository {
     private val habitsDao = AppDatabase.getInstance().habitDao()
     private val habitApi = RetrofitInstance.api
 
-    fun getAllHabits(): LiveData<List<Habit>> =
+    fun getAllHabits(): Flow<List<Habit>> =
             habitsDao.getAll()
 
     suspend fun updateHabitsByServer() {
