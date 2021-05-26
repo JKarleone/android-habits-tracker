@@ -9,16 +9,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.Habit
 import com.example.habitstracker.R
-import com.example.habitstracker.presentation.home.Extensions.getString
+import com.example.habitstracker.presentation.home.Mapper
 
 class HabitsAdapter(
     private var habits: MutableList<Habit>,
-    private val itemClickListener: OnHabitItemListener
+    private val itemClickListener: OnHabitItemListener,
+    private val mapper: Mapper
 ) : RecyclerView.Adapter<HabitsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ViewHolder(inflater.inflate(R.layout.habit_item, parent, false))
+        return ViewHolder(inflater.inflate(R.layout.habit_item, parent, false), mapper)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -40,7 +41,10 @@ class HabitsAdapter(
         diffResults.dispatchUpdatesTo(this)
     }
 
-    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(
+        private val view: View,
+        private val mapper: Mapper
+    ) : RecyclerView.ViewHolder(view) {
 
         private val name: TextView = view.findViewById(R.id.habitName)
         private val description: TextView = view.findViewById(R.id.habitDescription)
@@ -55,7 +59,7 @@ class HabitsAdapter(
             priority.text = habit.priority.toString()
 
             val countTimesString = view.resources.getQuantityString(R.plurals.plurals_frequency_times, habit.frequencyTimes, habit.frequencyTimes)
-            val frequencyString = habit.frequency.getString()
+            val frequencyString = mapper.mapToString(habit.frequency)
 
             frequency.text = "$countTimesString $frequencyString"
         }

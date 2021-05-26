@@ -10,21 +10,32 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import com.example.habitstracker.App
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentBottomSheetBinding
 import com.example.habitstracker.utils.SortField
+import javax.inject.Inject
 
 class BottomSheetFragment : Fragment() {
 
     private var _binding: FragmentBottomSheetBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HabitsViewModel by viewModels(
-        ownerProducer = { requireParentFragment() }
-    )
+    @Inject
+    lateinit var providerFactory: HabitsViewModelFactory
+
+    lateinit var viewModel: HabitsViewModel
 
     private var lastCheckedChipView = R.id.chipName
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        (requireActivity().application as App).applicationComponent.inject(this)
+
+        viewModel = ViewModelProvider(this, providerFactory).get(HabitsViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

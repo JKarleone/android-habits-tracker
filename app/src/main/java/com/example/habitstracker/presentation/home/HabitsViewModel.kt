@@ -1,19 +1,17 @@
 package com.example.habitstracker.presentation.home
 
 import androidx.lifecycle.*
-import com.example.data.repository.HabitRepositoryImpl
 import com.example.domain.Habit
 import com.example.domain.HabitInteractor
 import com.example.domain.utils.HabitType
-import com.example.habitstracker.App
 import com.example.habitstracker.utils.SortField
 import com.example.habitstracker.utils.SortUtil.getSortedList
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HabitsViewModel : ViewModel() {
-
-    private val habitRepository = HabitRepositoryImpl(App.applicationContext())
-    private val habitInteractor = HabitInteractor(habitRepository)
+class HabitsViewModel @Inject constructor(
+    private val habitInteractor: HabitInteractor
+) : ViewModel() {
 
     var searchSubstring: MutableLiveData<String> = MutableLiveData("")
 

@@ -1,15 +1,15 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
-import com.example.data.repository.HabitRepositoryImpl
 import com.example.domain.Habit
-import com.example.habitstracker.App
+import com.example.domain.HabitInteractor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HabitEditorViewModel : ViewModel() {
-
-    private val habitRepository = HabitRepositoryImpl(App.applicationContext())
+class HabitEditorViewModel @Inject constructor(
+    private val interactor: HabitInteractor
+) : ViewModel() {
 
     var name: String? = null
     var description: String? = null
@@ -37,7 +37,7 @@ class HabitEditorViewModel : ViewModel() {
         if (isCorrectToSave()) {
             GlobalScope.launch {
                 if (id == null)
-                    habitRepository.insertHabit(
+                    interactor.insertHabit(
                         Habit(
                             name!!,
                             description!!,
@@ -51,7 +51,7 @@ class HabitEditorViewModel : ViewModel() {
                         )
                     )
                 else
-                    habitRepository.updateHabit(
+                    interactor.updateHabit(
                         Habit(
                             name!!,
                             description!!,

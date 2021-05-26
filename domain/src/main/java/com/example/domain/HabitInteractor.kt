@@ -2,7 +2,7 @@ package com.example.domain
 
 import kotlinx.coroutines.flow.Flow
 
-class HabitInteractor(private val habitRepository: HabitRepository) {
+class HabitInteractor (private val habitRepository: HabitRepository) {
 
     fun getAllHabits(): Flow<List<Habit>> = habitRepository.getAllHabits()
 

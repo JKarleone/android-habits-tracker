@@ -15,20 +15,19 @@ import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.domain.utils.HabitFrequency
 import com.example.domain.utils.HabitPriority
 import com.example.domain.utils.HabitType
+import com.example.habitstracker.App
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitEditorBinding
-import com.example.habitstracker.presentation.home.Extensions.getString
-import com.example.habitstracker.presentation.home.Extensions.toHabitFrequency
-import com.example.habitstracker.presentation.home.Extensions.toHabitPriority
+import com.example.habitstracker.presentation.home.Mapper
 import com.example.habitstracker.presentation.main.MainActivity
 import com.example.habitstracker.utils.ColorPicker
 import com.google.android.material.textfield.TextInputLayout
+import javax.inject.Inject
 
 
 class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
@@ -43,13 +42,19 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
 
     private lateinit var colorPicker: ColorPicker
 
-    private val viewModel: HabitEditorViewModel by viewModels()
+    @Inject
+    lateinit var viewModel: HabitEditorViewModel
+
+    @Inject
+    lateinit var mapper: Mapper
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_habit_editor, container, false)
+
+        (requireActivity().application as App).applicationComponent.inject(this)
 
         fixEditTextName()
 
@@ -85,20 +90,20 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun setAdapters() {
-        prioritiesItems = HabitPriority.values().map { it.getString() }
+        prioritiesItems = HabitPriority.values().map { mapper.mapToString(it) }
         val priorityAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, prioritiesItems)
         binding.editTextPriority.setAdapter(priorityAdapter)
         binding.editTextPriority.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.priority = prioritiesItems[position].toHabitPriority()
+                viewModel.priority = mapper.mapToHabitPriority(prioritiesItems[position])
             }
 
-        intervalItems = HabitFrequency.values().map { it.getString() }
+        intervalItems = HabitFrequency.values().map { mapper.mapToString(it) }
         val intervalAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, intervalItems)
         binding.editTextInterval.setAdapter(intervalAdapter)
         binding.editTextInterval.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.frequency = intervalItems[position].toHabitFrequency()
+                viewModel.frequency = mapper.mapToHabitFrequency(intervalItems[position])
             }
     }
 
