@@ -112,8 +112,9 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun fillForm() {
+        val supportActionBarHelper = activity as SupportActionBarHelper
         if (viewModel.id != null) {
-            (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.header_edit_habit)
+            supportActionBarHelper.changeSupportActionBarTitle(resources.getString(R.string.header_edit_habit))
             binding.confirmHabitButton.text = resources.getString(R.string.habit_button_save)
             binding.confirmHabitButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_edit)
             setCheckedHabitTypeRadioButton()
@@ -121,7 +122,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
             binding.editTextInterval.setText(viewModel.frequency?.toString(), false)
         }
         else {
-            (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.header_new_habit)
+            supportActionBarHelper.changeSupportActionBarTitle(resources.getString(R.string.header_new_habit))
             binding.confirmHabitButton.text = resources.getString(R.string.habit_button_add)
             binding.confirmHabitButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_add)
         }
@@ -246,6 +247,10 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
             val errorLayout: TextInputLayout,
             val errorStringResource: Int
     )
+
+    interface SupportActionBarHelper {
+        fun changeSupportActionBarTitle(title: String)
+    }
 
     companion object {
 
