@@ -99,7 +99,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
         binding.editTextPriority.setAdapter(priorityAdapter)
         binding.editTextPriority.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.priority = mapper.mapToHabitPriority(prioritiesItems[position])
+                viewModel.habitBuilder.priority = mapper.mapToHabitPriority(prioritiesItems[position])
             }
 
         intervalItems = HabitFrequency.values().map { mapper.mapToString(it) }
@@ -107,19 +107,19 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
         binding.editTextInterval.setAdapter(intervalAdapter)
         binding.editTextInterval.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.frequency = mapper.mapToHabitFrequency(intervalItems[position])
+                viewModel.habitBuilder.frequency = mapper.mapToHabitFrequency(intervalItems[position])
             }
     }
 
     private fun fillForm() {
         val supportActionBarHelper = activity as SupportActionBarHelper
-        if (viewModel.id != null) {
+        if (viewModel.habitBuilder.id != null) {
             supportActionBarHelper.changeSupportActionBarTitle(resources.getString(R.string.header_edit_habit))
             binding.confirmHabitButton.text = resources.getString(R.string.habit_button_save)
             binding.confirmHabitButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_edit)
             setCheckedHabitTypeRadioButton()
-            binding.editTextPriority.setText(viewModel.priority?.toString(), false)
-            binding.editTextInterval.setText(viewModel.frequency?.toString(), false)
+            binding.editTextPriority.setText(viewModel.habitBuilder.priority?.toString(), false)
+            binding.editTextInterval.setText(viewModel.habitBuilder.frequency?.toString(), false)
         }
         else {
             supportActionBarHelper.changeSupportActionBarTitle(resources.getString(R.string.header_new_habit))
@@ -130,7 +130,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun setCheckedHabitTypeRadioButton() {
-        when(viewModel.type) {
+        when(viewModel.habitBuilder.type) {
             HabitType.Good -> binding.radioGroupHabitType.check(R.id.radioButtonGoodHabit)
             HabitType.Bad -> binding.radioGroupHabitType.check(R.id.radioButtonBadHabit)
         }
@@ -138,19 +138,19 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
 
     private fun onHabitTypeCheckedChange(group: RadioGroup, id: Int) {
         when (id) {
-            R.id.radioButtonGoodHabit -> viewModel.type = HabitType.Good
-            R.id.radioButtonBadHabit -> viewModel.type = HabitType.Bad
+            R.id.radioButtonGoodHabit -> viewModel.habitBuilder.type = HabitType.Good
+            R.id.radioButtonBadHabit -> viewModel.habitBuilder.type = HabitType.Bad
         }
     }
 
     override fun onColorSquareItemClick(view: View) {
-        viewModel.color = view.tag.toString().toInt()
+        viewModel.habitBuilder.color = view.tag.toString().toInt()
         setSelectedColorToView()
     }
 
     private fun setSelectedColorToView() {
-        if (viewModel.color != null) {
-            binding.selectedHabitColor.setColorFilter(viewModel.color!!)
+        if (viewModel.habitBuilder.color != null) {
+            binding.selectedHabitColor.setColorFilter(viewModel.habitBuilder.color!!)
             binding.selectedHabitColorRGB.text = getSelectedColorRGB()
             val hsv = getSelectedColorHSV()
             binding.selectedHabitColorHSV.text = "${hsv[0]}°, ${hsv[1]}, ${hsv[2]}"
@@ -165,12 +165,12 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun getSelectedColorRGB(): String {
-        return String.format("#%06X", (0xFFFFFF and viewModel.color!!))
+        return String.format("#%06X", (0xFFFFFF and viewModel.habitBuilder.color!!))
     }
 
     private fun getSelectedColorHSV(): FloatArray {
         val hsv = FloatArray(3)
-        Color.colorToHSV(viewModel.color!!, hsv)
+        Color.colorToHSV(viewModel.habitBuilder.color!!, hsv)
         return hsv
     }
 
@@ -218,7 +218,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun isColorSelected(): Boolean {
-        val result = viewModel.color != null
+        val result = viewModel.habitBuilder.color != null
         if (!result) {
             binding.selectedHabitColorError.setText(R.string.error_make_a_choice)
             binding.selectedHabitColorError.visibility = View.VISIBLE

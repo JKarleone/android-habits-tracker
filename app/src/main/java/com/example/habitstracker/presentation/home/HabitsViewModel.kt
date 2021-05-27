@@ -60,9 +60,9 @@ class HabitsViewModel @Inject constructor(
     }
 
     fun completeHabit(habit: Habit, date: Int): String {
-        habitDone(habit, date)
-
         val goalCount = habitInteractor.getGoalCount(habit) - 1
+
+        habitDone(habit, date)
 
         return toastHelper.getToastText(goalCount, habit.type)
     }

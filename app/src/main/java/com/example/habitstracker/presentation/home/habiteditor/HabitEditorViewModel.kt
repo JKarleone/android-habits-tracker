@@ -14,75 +14,25 @@ class HabitEditorViewModel @Inject constructor(
     private val interactor: HabitInteractor
 ) : ViewModel() {
 
-    var name: String? = null
-    var description: String? = null
-    var priority: HabitPriority? = null
-    var type: HabitType? = null
-    var frequencyTimes: Int? = null
-    var frequency: HabitFrequency? = null
-    var color: Int? = null
-    var date: Int? = null
-    var doneDates: List<Int>? = null
-    var id: String? = null
+    var habitBuilder: HabitBuilder = HabitBuilder()
 
     fun setData(habit: Habit?) {
-        name = habit?.name
-        description = habit?.description
-        priority = habit?.priority
-        type = habit?.type
-        frequencyTimes = habit?.frequencyTimes
-        frequency = habit?.frequency
-        color = habit?.color
-        date = habit?.date
-        doneDates = habit?.doneDates
-        id = habit?.id
+        habitBuilder = HabitBuilder(habit)
     }
 
     fun saveHabit() {
-        if (isCorrectToSave()) {
+        if (isCorrectToSave())
             GlobalScope.launch {
-                if (id == null)
-                    interactor.insertHabit(
-                        Habit(
-                            name!!,
-                            description!!,
-                            priority!!,
-                            type!!,
-                            frequencyTimes!!,
-                            frequency!!,
-                            color!!,
-                            0,
-                            emptyList(),
-                            ""
-                        )
-                    )
+                val habit = habitBuilder.build()
+                if (habitBuilder.id == null)
+                    interactor.insertHabit(habit)
                 else
-                    interactor.updateHabit(
-                        Habit(
-                            name!!,
-                            description!!,
-                            priority!!,
-                            type!!,
-                            frequencyTimes!!,
-                            frequency!!,
-                            color!!,
-                            date!!,
-                            doneDates!!,
-                            id!!
-                        )
-                    )
+                    interactor.updateHabit(habit)
             }
-        }
     }
 
     private fun isCorrectToSave(): Boolean {
-        return  name != null &&
-                description != null &&
-                priority != null &&
-                type != null &&
-                frequencyTimes != null &&
-                frequency != null &&
-                color != null
+        return habitBuilder.isCorrectToBuild()
     }
 
 }
