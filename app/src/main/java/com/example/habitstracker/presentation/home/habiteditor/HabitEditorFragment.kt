@@ -15,6 +15,7 @@ import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.domain.utils.HabitFrequency
@@ -43,6 +44,8 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     private lateinit var colorPicker: ColorPicker
 
     @Inject
+    lateinit var factory: HabitEditorViewModelFactory
+
     lateinit var viewModel: HabitEditorViewModel
 
     @Inject
@@ -54,7 +57,8 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     ): View {
         _binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_habit_editor, container, false)
 
-        (requireActivity().application as App).applicationComponent.inject(this)
+        (requireActivity().application as App).applicationComponent.habitSubcomponent().build().inject(this)
+        viewModel = ViewModelProvider(requireParentFragment(), factory).get(HabitEditorViewModel::class.java)
 
         fixEditTextName()
 

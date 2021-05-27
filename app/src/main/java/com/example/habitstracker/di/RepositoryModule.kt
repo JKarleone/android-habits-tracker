@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class RepositoryModule {
 
     @Provides
-    @Singleton
+    @ActivityScope
     fun provideRepository(habitDao: HabitDao, habitApi: HabitApi): HabitRepository {
         return HabitRepositoryImpl(habitDao, habitApi)
     }

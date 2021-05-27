@@ -10,22 +10,23 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        RepositoryModule::class,
-        InteractorModule::class,
+//        RepositoryModule::class,
+//        InteractorModule::class,
         RemoteModule::class,
         RoomModule::class,
         ContextModule::class,
-        MapperModule::class
+        MapperModule::class,
+        AppModule::class
     ]
 )
 interface ApplicationComponent {
 
     // Fragments
-    fun inject(habitEditorFragment: HabitEditorFragment)
-    fun inject(habitsFragment: HabitsFragment)
+//    fun inject(habitEditorFragment: HabitEditorFragment)
+//    fun inject(habitsFragment: HabitsFragment)
     fun inject(homeFragment: HomeFragment)
-    fun inject(bottomSheetFragment: BottomSheetFragment)
+//    fun inject(bottomSheetFragment: BottomSheetFragment)
 
-//    fun habitSubcomponent(): HabitSubcomponent.Builder
+    fun habitSubcomponent(): HabitSubcomponent.Builder
 
 }

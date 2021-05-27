@@ -20,15 +20,12 @@ class RemoteModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient, gsonConverterFactory: GsonConverterFactory): Retrofit {
-        val baseUrl = "https://droid-test-server.doubletapp.ru/api/"
-
-        return Retrofit.Builder()
-            .baseUrl(baseUrl)
+    fun provideRetrofit(client: OkHttpClient, gsonConverterFactory: GsonConverterFactory): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(gsonConverterFactory)
             .build()
-    }
 
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory =
@@ -41,13 +38,10 @@ class RemoteModule {
             .build()
 
     @Provides
-    fun provideInterceptor(): Interceptor {
-        val token = "821ba30d-f0b5-4470-86d9-ab00c74dcdf4"
-        val millis = 5000L
-
-        return Interceptor {
+    fun provideInterceptor(): Interceptor =
+        Interceptor {
             val request = it.request().newBuilder()
-                .addHeader("Authorization", token)
+                .addHeader("Authorization", TOKEN)
                 .build()
             var response = it.proceed(request)
             val code = response.code()
@@ -55,13 +49,20 @@ class RemoteModule {
             if (code != 200) {
                 do {
                     response.close()
-                    Thread.sleep(millis)
+                    Thread.sleep(DELAY_MS)
                     response = it.proceed(request)
                 } while (response.code() == code)
             }
 
             return@Interceptor response
         }
+
+    companion object {
+
+        private const val BASE_URL = "https://droid-test-server.doubletapp.ru/api/"
+        private const val TOKEN = "821ba30d-f0b5-4470-86d9-ab00c74dcdf4"
+        private const val DELAY_MS = 5000L
+
     }
 
 }

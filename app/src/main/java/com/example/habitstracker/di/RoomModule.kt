@@ -20,12 +20,15 @@ class RoomModule {
     @Provides
     @Singleton
     fun provideAppDatabase(context: Context): AppDatabase {
-        val name = "habitstracker_db"
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            name
+            NAME
         ).build()
+    }
+
+    companion object {
+        private const val NAME = "habitstracker_db"
     }
 
 }

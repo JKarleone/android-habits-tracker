@@ -41,7 +41,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (requireActivity().application as App).applicationComponent.inject(this)
+        (requireActivity().application as App).applicationComponent.habitSubcomponent().build().inject(this)
 
         viewModel = ViewModelProvider(requireParentFragment(), providerFactory).get(HabitsViewModel::class.java)
 

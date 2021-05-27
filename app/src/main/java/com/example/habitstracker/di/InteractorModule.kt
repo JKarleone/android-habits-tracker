@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class InteractorModule {
 
     @Provides
-    @Singleton
+    @ActivityScope
     fun provideHabitInteractor(habitRepository: HabitRepository): HabitInteractor {
         return HabitInteractor(habitRepository)
     }
