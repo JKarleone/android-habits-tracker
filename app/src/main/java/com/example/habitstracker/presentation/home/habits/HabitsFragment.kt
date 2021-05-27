@@ -109,9 +109,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener, DeleteItem
     }
 
     override fun onHabitDoneClick(habit: Habit) {
-        val intDate = (Date().time / 1000).toInt()
-
-        val toastText = viewModel.completeHabit(habit, intDate)
+        val toastText = viewModel.completeHabit(habit)
         Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
     }
 

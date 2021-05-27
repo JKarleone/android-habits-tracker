@@ -1,6 +1,7 @@
 package com.example.habitstracker.presentation.home
 
 import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import com.example.domain.Habit
 import com.example.domain.HabitInteractor
 import com.example.domain.utils.HabitType
@@ -8,6 +9,7 @@ import com.example.habitstracker.utils.HabitToastHelper
 import com.example.habitstracker.utils.SortField
 import com.example.habitstracker.utils.SortUtil.getSortedList
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 class HabitsViewModel @Inject constructor(
@@ -59,7 +61,8 @@ class HabitsViewModel @Inject constructor(
         return filteredHabits.getSortedList(sortField.value!!, sortByAscending.value!!)
     }
 
-    fun completeHabit(habit: Habit, date: Int): String {
+    fun completeHabit(habit: Habit): String {
+        val date = (Date().time / 1000).toInt()
         val goalCount = habitInteractor.getGoalCount(habit) - 1
 
         habitDone(habit, date)
