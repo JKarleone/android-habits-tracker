@@ -10,10 +10,6 @@ class App : Application() {
     lateinit var applicationComponent: ApplicationComponent
         private set
 
-//    init {
-//        instance = this
-//    }
-
     override fun onCreate() {
         super.onCreate()
         applicationComponent = DaggerApplicationComponent
@@ -21,13 +17,5 @@ class App : Application() {
             .contextModule(ContextModule(this))
             .build()
     }
-
-//    companion object {
-//        private var instance: App? = null
-//
-//        fun applicationContext(): Context {
-//            return instance!!.applicationContext
-//        }
-//    }
 
 }

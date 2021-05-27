@@ -57,4 +57,10 @@ class HabitsViewModel @Inject constructor(
         return filteredHabits.getSortedList(sortField.value!!, sortByAscending.value!!)
     }
 
+    fun habitDone(habit: Habit, date: Int) {
+        viewModelScope.launch {
+            habitInteractor.habitDone(habit, date)
+        }
+    }
+
 }

@@ -51,7 +51,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_habit_editor, container, false)
 
         (requireActivity().application as App).applicationComponent.inject(this)

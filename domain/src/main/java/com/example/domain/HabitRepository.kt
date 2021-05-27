@@ -14,4 +14,6 @@ interface HabitRepository {
 
     suspend fun deleteHabit(habit: Habit)
 
+    suspend fun habitDone(habit: Habit, date: Int)
+
 }

@@ -34,11 +34,11 @@ class BottomSheetFragment : Fragment() {
 
         (requireActivity().application as App).applicationComponent.inject(this)
 
-        viewModel = ViewModelProvider(this, providerFactory).get(HabitsViewModel::class.java)
+        viewModel = ViewModelProvider(requireParentFragment(), providerFactory).get(HabitsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_bottom_sheet, container, false)
         binding.viewModel = viewModel
 

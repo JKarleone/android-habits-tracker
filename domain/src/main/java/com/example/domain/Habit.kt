@@ -14,5 +14,6 @@ data class Habit(
     var frequency: HabitFrequency,
     var color: Int,
     var date: Int,
+    var doneDates: List<Int>,
     var id: String
 ) : Serializable

@@ -1,12 +1,10 @@
 package com.example.data.network.api
 
+import com.example.data.network.model.HabitDone
 import com.example.data.network.model.HabitModel
 import com.example.data.network.model.HabitUID
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface HabitApi {
 
@@ -18,5 +16,8 @@ interface HabitApi {
 
     @DELETE("habit")
     suspend fun deleteHabit(@Body uid: HabitUID)
+
+    @POST("habit_done")
+    suspend fun habitDone(@Body habitDone: HabitDone)
 
 }

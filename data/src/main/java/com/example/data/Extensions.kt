@@ -15,7 +15,7 @@ object Extensions {
             this.frequencyTimes,
             this.date,
             this.description,
-            emptyList(),
+            this.doneDates,
             this.frequency.toInt(),
             this.priority.toInt(),
             this.name,
@@ -34,6 +34,7 @@ object Extensions {
             this.frequency.toHabitFrequency(),
             this.color,
             this.date,
+            this.done_dates,
             this.uid
         )
     }
@@ -48,6 +49,7 @@ object Extensions {
             this.frequency,
             this.color,
             this.date,
+            this.doneDates,
             this.id
         )
     }
@@ -62,6 +64,7 @@ object Extensions {
             this.frequency,
             this.color,
             this.date,
+            this.doneDates,
             this.id
         )
     }

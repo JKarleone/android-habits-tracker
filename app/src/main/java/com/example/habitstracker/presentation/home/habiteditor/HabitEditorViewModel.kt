@@ -3,6 +3,9 @@ package com.example.habitstracker.presentation.home.habiteditor
 import androidx.lifecycle.ViewModel
 import com.example.domain.Habit
 import com.example.domain.HabitInteractor
+import com.example.domain.utils.HabitFrequency
+import com.example.domain.utils.HabitPriority
+import com.example.domain.utils.HabitType
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,12 +16,13 @@ class HabitEditorViewModel @Inject constructor(
 
     var name: String? = null
     var description: String? = null
-    var priority: com.example.domain.utils.HabitPriority? = null
-    var type: com.example.domain.utils.HabitType? = null
+    var priority: HabitPriority? = null
+    var type: HabitType? = null
     var frequencyTimes: Int? = null
-    var frequency: com.example.domain.utils.HabitFrequency? = null
+    var frequency: HabitFrequency? = null
     var color: Int? = null
     var date: Int? = null
+    var doneDates: List<Int>? = null
     var id: String? = null
 
     fun setData(habit: Habit?) {
@@ -30,6 +34,7 @@ class HabitEditorViewModel @Inject constructor(
         frequency = habit?.frequency
         color = habit?.color
         date = habit?.date
+        doneDates = habit?.doneDates
         id = habit?.id
     }
 
@@ -47,6 +52,7 @@ class HabitEditorViewModel @Inject constructor(
                             frequency!!,
                             color!!,
                             0,
+                            emptyList(),
                             ""
                         )
                     )
@@ -61,6 +67,7 @@ class HabitEditorViewModel @Inject constructor(
                             frequency!!,
                             color!!,
                             date!!,
+                            doneDates!!,
                             id!!
                         )
                     )

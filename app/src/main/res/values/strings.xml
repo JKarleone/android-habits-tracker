@@ -48,7 +48,7 @@
 
     <string name="view_pager_good_habits_header">Good</string>
     <string name="view_pager_bad_habits_header">Bad</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="search">Search</string>
     <string name="sort_by">Sort by</string>
     <string name="sort_by_name">Name</string>
@@ -56,5 +56,26 @@
     <string name="sort_by_color">Color</string>
     <string name="sort_by_frequency">Frequency</string>
     <string name="bottom_sheet_label">Search and filters</string>
+
+    <string name="habit_goal_is_achived">Your goal is achieved!</string>
+
+    <plurals name="habit_good_toast_less_than_goal">
+        <item quantity="one">You need to do one more time</item>
+        <item quantity="few">You need to do it %d more times</item>
+        <item quantity="many">You need to do it %d more times</item>
+        <item quantity="other">You need to do it %d more times</item>
+    </plurals>
+
+    <string name="habit_good_toast_more_than_goal" translatable="false">You\'re breathtaking</string>
+
+    <plurals name="habit_bad_toast_less_than_goal">
+        <item quantity="one">You can only do it one more time</item>
+        <item quantity="few">You can do it %d more times</item>
+        <item quantity="many">You can do it %d more times</item>
+        <item quantity="other">You can do it %d more times</item>
+    </plurals>
+
+    <string name="habit_bad_toast_more_than_goal">Stop it!</string>
+    <string name="button_done_text">Done</string>
 
 </resources>

@@ -8,6 +8,8 @@ import com.example.data.Extensions.toInt
 import com.example.domain.utils.HabitFrequency
 import com.example.domain.utils.HabitPriority
 import com.example.domain.utils.HabitType
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 object RoomConverter {
 
@@ -34,5 +36,17 @@ object RoomConverter {
     @JvmStatic
     @TypeConverter
     fun fromHabitType(value: HabitType): Int = value.toInt()
+
+    @JvmStatic
+    @TypeConverter
+    fun fromDoneDates(value: List<Int>): String {
+        return Gson().toJson(value)
+    }
+
+    @JvmStatic
+    @TypeConverter
+    fun toDoneDates(value: String): List<Int> {
+        return Gson().fromJson(value, Array<Int>::class.java).toList()
+    }
 
 }

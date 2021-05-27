@@ -6,12 +6,15 @@ import com.example.data.Extensions.toHabitData
 import com.example.data.Extensions.toHabitModel
 import com.example.data.dao.HabitDao
 import com.example.data.network.api.HabitApi
+import com.example.data.network.model.HabitDone
+import com.example.data.network.model.HabitUID
 import com.example.domain.Habit
 import com.example.domain.HabitRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class HabitRepositoryImpl(
     private val habitDao: HabitDao,
@@ -39,18 +42,28 @@ class HabitRepositoryImpl(
     }
 
     override suspend fun updateHabit(habit: Habit) {
-        habit.date += 1
+        habit.date = (Date().time / 1000).toInt()
         habitDao.update(habit.toHabitData())
         habitApi.putHabit(habit.toHabitModel())
     }
 
     override suspend fun deleteHabit(habit: Habit) {
         habitDao.delete(habit.toHabitData())
-        habit.id.let { habitApi.deleteHabit(com.example.data.network.model.HabitUID(habit.id)) }
+        habit.id.let { habitApi.deleteHabit(HabitUID(habit.id)) }
+    }
+
+    override suspend fun habitDone(habit: Habit, date: Int) {
+        habit.doneDates = habit.doneDates.toMutableList().also { it.add(date) }
+        updateHabit(habit)
+
+        val habitDone = HabitDone(date, habit.id)
+        habitApi.habitDone(habitDone)
     }
 
     companion object {
+
         private const val TAG = "repository"
+
     }
 
 }

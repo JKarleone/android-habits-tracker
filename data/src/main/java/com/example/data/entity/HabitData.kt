@@ -17,6 +17,7 @@ data class HabitData(
         var frequency: HabitFrequency,
         var color: Int,
         var date: Int,
+        var doneDates: List<Int>,
         @PrimaryKey
         var id: String
 ) : Serializable

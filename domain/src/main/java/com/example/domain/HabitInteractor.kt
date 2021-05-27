@@ -22,4 +22,8 @@ class HabitInteractor (private val habitRepository: HabitRepository) {
         habitRepository.deleteHabit(habit)
     }
 
+    suspend fun habitDone(habit: Habit, date: Int) {
+        habitRepository.habitDone(habit, date)
+    }
+
 }
