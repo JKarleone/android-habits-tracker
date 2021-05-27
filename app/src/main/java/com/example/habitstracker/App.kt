@@ -1,20 +1,21 @@
 package com.example.habitstracker
 
 import android.app.Application
-import android.content.Context
+import com.example.habitstracker.di.ApplicationComponent
+import com.example.habitstracker.di.ContextModule
+import com.example.habitstracker.di.DaggerApplicationComponent
 
 class App : Application() {
 
-    init {
-        instance = this
-    }
+    lateinit var applicationComponent: ApplicationComponent
+        private set
 
-    companion object {
-        private var instance: App? = null
-
-        fun applicationContext(): Context {
-            return instance!!.applicationContext
-        }
+    override fun onCreate() {
+        super.onCreate()
+        applicationComponent = DaggerApplicationComponent
+            .builder()
+            .contextModule(ContextModule(this))
+            .build()
     }
 
 }

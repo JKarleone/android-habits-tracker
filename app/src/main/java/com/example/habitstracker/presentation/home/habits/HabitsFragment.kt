@@ -1,23 +1,28 @@
 package com.example.habitstracker.presentation.home.habits
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.habitstracker.data.entity.Habit
+import com.example.domain.Habit
+import com.example.domain.utils.HabitFrequency
+import com.example.domain.utils.HabitType
+import com.example.habitstracker.App
+import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitsBinding
-import com.example.habitstracker.presentation.home.HabitsViewModel
-import com.example.habitstracker.presentation.home.HomeFragment
-import com.example.habitstracker.presentation.home.HomeFragmentDirections
-import com.example.habitstracker.utils.HabitType
+import com.example.habitstracker.presentation.home.*
+import com.example.habitstracker.utils.HabitToastHelper
+import java.util.*
+import javax.inject.Inject
 
-class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
+class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener, DeleteItemDialogFragment.DeleteItemListener {
 
     private var _binding: FragmentHabitsBinding? = null
     private val binding get() = _binding!!
@@ -26,12 +31,21 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     private lateinit var habitsAdapter: HabitsAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
-    private val viewModel: HabitsViewModel by viewModels(
-            ownerProducer = { requireParentFragment() }
-    )
+    @Inject
+    lateinit var mapper: Mapper
+
+    @Inject
+    lateinit var providerFactory: HabitsViewModelFactory
+
+    private lateinit var viewModel: HabitsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (requireActivity().application as App).applicationComponent.habitSubcomponent().build().inject(this)
+
+        viewModel = ViewModelProvider(requireParentFragment(), providerFactory).get(HabitsViewModel::class.java)
+
         arguments?.let {
             habitType = it.getSerializable(ARG_HABIT_TYPE) as? HabitType
         }
@@ -40,7 +54,7 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHabitsBinding.inflate(layoutInflater, container, false)
 
         initRecyclerView()
@@ -57,11 +71,11 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     }
 
     private fun initRecyclerView() {
-        habitsAdapter = HabitsAdapter(mutableListOf(), this)
+        habitsAdapter = HabitsAdapter(mutableListOf(), this, mapper)
         binding.habitsRecyclerView.adapter = habitsAdapter
         layoutManager = LinearLayoutManager(requireContext())
         binding.habitsRecyclerView.layoutManager = layoutManager
-        binding.habitsRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+//        binding.habitsRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     private fun setObservers() {
@@ -84,6 +98,23 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
         val navController = fragment.findNavController()
         val action = HomeFragmentDirections.actionHomeFragmentToHabitEditorFragment(habit)
         navController.navigate(action)
+    }
+
+    override fun onHabitItemLongClick(habit: Habit): Boolean {
+        val dialogFragment = DeleteItemDialogFragment(this, habit)
+        val manager = requireActivity().supportFragmentManager
+        dialogFragment.show(manager, DeleteItemDialogFragment.TAG)
+
+        return true
+    }
+
+    override fun onHabitDoneClick(habit: Habit) {
+        val toastText = viewModel.completeHabit(habit)
+        Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun confirmButtonClicked(habit: Habit) {
+        viewModel.deleteHabit(habit)
     }
 
     companion object {

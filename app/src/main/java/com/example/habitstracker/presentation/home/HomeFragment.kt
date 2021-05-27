@@ -11,21 +11,32 @@ import androidx.navigation.fragment.findNavController
 import com.example.habitstracker.App
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHomeBinding
+import com.example.habitstracker.utils.ResourceManager
 import com.example.habitstracker.utils.Util.Companion.dpToPx
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayoutMediator
+import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var resourceManager: ResourceManager
+
     private lateinit var viewPagerAdapter: HabitsViewPagerAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        (requireActivity().application as App).applicationComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         viewPagerAdapter = HabitsViewPagerAdapter(childFragmentManager, lifecycle)
@@ -33,8 +44,8 @@ class HomeFragment : Fragment() {
         binding.habitsList.habitsViewPager.adapter = viewPagerAdapter
         TabLayoutMediator(binding.habitsList.habitsTabLayout, binding.habitsList.habitsViewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> App.applicationContext().getString(R.string.view_pager_good_habits_header)
-                else -> App.applicationContext().getString(R.string.view_pager_bad_habits_header)
+                0 -> resourceManager.getResourceString(R.string.view_pager_good_habits_header)
+                else -> resourceManager.getResourceString(R.string.view_pager_bad_habits_header)
             }
         }.attach()
 

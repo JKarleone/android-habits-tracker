@@ -1,16 +1,21 @@
 package com.example.habitstracker.presentation.home
 
 import androidx.lifecycle.*
-import com.example.habitstracker.data.entity.Habit
-import com.example.habitstracker.domain.repository.HabitRepository
-import com.example.habitstracker.utils.HabitType
+import androidx.lifecycle.Observer
+import com.example.domain.Habit
+import com.example.domain.HabitInteractor
+import com.example.domain.utils.HabitType
+import com.example.habitstracker.utils.HabitToastHelper
 import com.example.habitstracker.utils.SortField
 import com.example.habitstracker.utils.SortUtil.getSortedList
 import kotlinx.coroutines.launch
+import java.util.*
+import javax.inject.Inject
 
-class HabitsViewModel : ViewModel() {
-
-    private val habitRepository = HabitRepository()
+class HabitsViewModel @Inject constructor(
+    private val habitInteractor: HabitInteractor,
+    private val toastHelper: HabitToastHelper
+) : ViewModel() {
 
     var searchSubstring: MutableLiveData<String> = MutableLiveData("")
 
@@ -18,7 +23,7 @@ class HabitsViewModel : ViewModel() {
 
     var sortByAscending: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    private val habits = habitRepository.getAllHabits().asLiveData()
+    private val habits = habitInteractor.getAllHabits().asLiveData()
 
     val goodHabits: MediatorLiveData<List<Habit>> = MediatorLiveData()
     val badHabits: MediatorLiveData<List<Habit>> = MediatorLiveData()
@@ -37,7 +42,7 @@ class HabitsViewModel : ViewModel() {
         badHabits.addSource(sortByAscending, observer)
 
         viewModelScope.launch {
-            habitRepository.updateHabitsByServer()
+            habitInteractor.updateHabitsByServer()
         }
     }
 
@@ -54,6 +59,27 @@ class HabitsViewModel : ViewModel() {
             (it.name.contains(searchSubstring.value!!, true) || it.description.contains(searchSubstring.value!!, true))
         }.toMutableList()
         return filteredHabits.getSortedList(sortField.value!!, sortByAscending.value!!)
+    }
+
+    fun completeHabit(habit: Habit): String {
+        val date = (Date().time / 1000).toInt()
+        val goalCount = habitInteractor.getGoalCount(habit) - 1
+
+        habitDone(habit, date)
+
+        return toastHelper.getToastText(goalCount, habit.type)
+    }
+
+    private fun habitDone(habit: Habit, date: Int) {
+        viewModelScope.launch {
+            habitInteractor.habitDone(habit, date)
+        }
+    }
+
+    fun deleteHabit(habit: Habit) {
+        viewModelScope.launch {
+            habitInteractor.deleteHabit(habit)
+        }
     }
 
 }

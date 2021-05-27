@@ -1,83 +1,38 @@
 package com.example.habitstracker.presentation.home.habiteditor
 
 import androidx.lifecycle.ViewModel
-import com.example.habitstracker.data.entity.Habit
-import com.example.habitstracker.domain.repository.HabitRepository
-import com.example.habitstracker.utils.HabitFrequency
-import com.example.habitstracker.utils.HabitPriority
-import com.example.habitstracker.utils.HabitType
+import com.example.domain.Habit
+import com.example.domain.HabitInteractor
+import com.example.domain.utils.HabitFrequency
+import com.example.domain.utils.HabitPriority
+import com.example.domain.utils.HabitType
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HabitEditorViewModel : ViewModel() {
+class HabitEditorViewModel @Inject constructor(
+    private val interactor: HabitInteractor
+) : ViewModel() {
 
-    private val habitRepository = HabitRepository()
-
-    var name: String? = null
-    var description: String? = null
-    var priority: HabitPriority? = null
-    var type: HabitType? = null
-    var frequencyTimes: Int? = null
-    var frequency: HabitFrequency? = null
-    var color: Int? = null
-    var date: Int? = null
-    var id: String? = null
+    var habitBuilder: HabitBuilder = HabitBuilder()
 
     fun setData(habit: Habit?) {
-        name = habit?.name
-        description = habit?.description
-        priority = habit?.priority
-        type = habit?.type
-        frequencyTimes = habit?.frequencyTimes
-        frequency = habit?.frequency
-        color = habit?.color
-        date = habit?.date
-        id = habit?.id
+        habitBuilder = HabitBuilder(habit)
     }
 
     fun saveHabit() {
-        if (isCorrectToSave()) {
+        if (isCorrectToSave())
             GlobalScope.launch {
-                if (id == null)
-                    habitRepository.insertHabit(
-                            Habit(
-                                    name!!,
-                                    description!!,
-                                    priority!!,
-                                    type!!,
-                                    frequencyTimes!!,
-                                    frequency!!,
-                                    color!!,
-                                    0,
-                                ""
-                            )
-                    )
+                val habit = habitBuilder.build()
+                if (habitBuilder.id == null)
+                    interactor.insertHabit(habit)
                 else
-                    habitRepository.updateHabit(
-                            Habit(
-                                    name!!,
-                                    description!!,
-                                    priority!!,
-                                    type!!,
-                                    frequencyTimes!!,
-                                    frequency!!,
-                                    color!!,
-                                    date!!,
-                                    id!!
-                            )
-                    )
+                    interactor.updateHabit(habit)
             }
-        }
     }
 
     private fun isCorrectToSave(): Boolean {
-        return  name != null &&
-                description != null &&
-                priority != null &&
-                type != null &&
-                frequencyTimes != null &&
-                frequency != null &&
-                color != null
+        return habitBuilder.isCorrectToBuild()
     }
 
 }

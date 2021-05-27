@@ -45,4 +45,23 @@
     <string name="sort_by_frequency">Частоте</string>
     <string name="bottom_sheet_label">Поиск и фильтры</string>
 
+    <string name="habit_goal_is_achived">Вы достигли цели!</string>
+    <string name="habit_bad_toast_more_than_goal">Хватит это делать!</string>
+    <plurals name="habit_good_toast_less_than_goal">
+        <item quantity="one">Стоит выполнить ещё %d раз</item>
+        <item quantity="few">Стоит выполнить ещё %d раза</item>
+        <item quantity="many">Стоит выполнить ещё %d раз</item>
+        <item quantity="other">Стоит выполнить ещё %d раз</item>
+    </plurals>
+    <plurals name="habit_bad_toast_less_than_goal">
+        <item quantity="one">Можете выполнить ещё %d раз</item>
+        <item quantity="few">Можете выполнить ещё %d раза</item>
+        <item quantity="many">Можете выполнить ещё %d раз</item>
+        <item quantity="other">Можете выполнить ещё %d раз</item>
+    </plurals>
+    <string name="button_done_text">Сделано</string>
+    <string name="dialog_delete_habit_message">Удалить привычку?</string>
+    <string name="dialog_delete_habit_positive_button">Удалить</string>
+    <string name="dialog_delete_habit_negative_button">Отмена</string>
+
 </resources>

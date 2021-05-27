@@ -15,17 +15,20 @@ import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.domain.utils.HabitFrequency
+import com.example.domain.utils.HabitPriority
+import com.example.domain.utils.HabitType
+import com.example.habitstracker.App
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitEditorBinding
+import com.example.habitstracker.presentation.home.Mapper
 import com.example.habitstracker.presentation.main.MainActivity
 import com.example.habitstracker.utils.ColorPicker
-import com.example.habitstracker.utils.HabitFrequency
-import com.example.habitstracker.utils.HabitPriority
-import com.example.habitstracker.utils.HabitType
 import com.google.android.material.textfield.TextInputLayout
+import javax.inject.Inject
 
 
 class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
@@ -40,13 +43,22 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
 
     private lateinit var colorPicker: ColorPicker
 
-    private val viewModel: HabitEditorViewModel by viewModels()
+    @Inject
+    lateinit var factory: HabitEditorViewModelFactory
+
+    lateinit var viewModel: HabitEditorViewModel
+
+    @Inject
+    lateinit var mapper: Mapper
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_habit_editor, container, false)
+
+        (requireActivity().application as App).applicationComponent.habitSubcomponent().build().inject(this)
+        viewModel = ViewModelProvider(requireParentFragment(), factory).get(HabitEditorViewModel::class.java)
 
         fixEditTextName()
 
@@ -82,34 +94,35 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun setAdapters() {
-        prioritiesItems = HabitPriority.values().map { it.toString() }
+        prioritiesItems = HabitPriority.values().map { mapper.mapToString(it) }
         val priorityAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, prioritiesItems)
         binding.editTextPriority.setAdapter(priorityAdapter)
         binding.editTextPriority.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.priority = HabitPriority.getHabitPriorityByString(prioritiesItems[position])
+                viewModel.habitBuilder.priority = mapper.mapToHabitPriority(prioritiesItems[position])
             }
 
-        intervalItems = HabitFrequency.values().map { it.toString() }
+        intervalItems = HabitFrequency.values().map { mapper.mapToString(it) }
         val intervalAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, intervalItems)
         binding.editTextInterval.setAdapter(intervalAdapter)
         binding.editTextInterval.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.frequency = HabitFrequency.getHabitFrequencyByString(intervalItems[position])
+                viewModel.habitBuilder.frequency = mapper.mapToHabitFrequency(intervalItems[position])
             }
     }
 
     private fun fillForm() {
-        if (viewModel.id != null) {
-            (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.header_edit_habit)
+        val supportActionBarHelper = activity as SupportActionBarHelper
+        if (viewModel.habitBuilder.id != null) {
+            supportActionBarHelper.changeSupportActionBarTitle(resources.getString(R.string.header_edit_habit))
             binding.confirmHabitButton.text = resources.getString(R.string.habit_button_save)
             binding.confirmHabitButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_edit)
             setCheckedHabitTypeRadioButton()
-            binding.editTextPriority.setText(viewModel.priority?.toString(), false)
-            binding.editTextInterval.setText(viewModel.frequency?.toString(), false)
+            binding.editTextPriority.setText(viewModel.habitBuilder.priority?.toString(), false)
+            binding.editTextInterval.setText(viewModel.habitBuilder.frequency?.toString(), false)
         }
         else {
-            (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.header_new_habit)
+            supportActionBarHelper.changeSupportActionBarTitle(resources.getString(R.string.header_new_habit))
             binding.confirmHabitButton.text = resources.getString(R.string.habit_button_add)
             binding.confirmHabitButton.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_add)
         }
@@ -117,7 +130,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun setCheckedHabitTypeRadioButton() {
-        when(viewModel.type) {
+        when(viewModel.habitBuilder.type) {
             HabitType.Good -> binding.radioGroupHabitType.check(R.id.radioButtonGoodHabit)
             HabitType.Bad -> binding.radioGroupHabitType.check(R.id.radioButtonBadHabit)
         }
@@ -125,19 +138,19 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
 
     private fun onHabitTypeCheckedChange(group: RadioGroup, id: Int) {
         when (id) {
-            R.id.radioButtonGoodHabit -> viewModel.type = HabitType.Good
-            R.id.radioButtonBadHabit -> viewModel.type = HabitType.Bad
+            R.id.radioButtonGoodHabit -> viewModel.habitBuilder.type = HabitType.Good
+            R.id.radioButtonBadHabit -> viewModel.habitBuilder.type = HabitType.Bad
         }
     }
 
     override fun onColorSquareItemClick(view: View) {
-        viewModel.color = view.tag.toString().toInt()
+        viewModel.habitBuilder.color = view.tag.toString().toInt()
         setSelectedColorToView()
     }
 
     private fun setSelectedColorToView() {
-        if (viewModel.color != null) {
-            binding.selectedHabitColor.setColorFilter(viewModel.color!!)
+        if (viewModel.habitBuilder.color != null) {
+            binding.selectedHabitColor.setColorFilter(viewModel.habitBuilder.color!!)
             binding.selectedHabitColorRGB.text = getSelectedColorRGB()
             val hsv = getSelectedColorHSV()
             binding.selectedHabitColorHSV.text = "${hsv[0]}°, ${hsv[1]}, ${hsv[2]}"
@@ -152,12 +165,12 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun getSelectedColorRGB(): String {
-        return String.format("#%06X", (0xFFFFFF and viewModel.color!!))
+        return String.format("#%06X", (0xFFFFFF and viewModel.habitBuilder.color!!))
     }
 
     private fun getSelectedColorHSV(): FloatArray {
         val hsv = FloatArray(3)
-        Color.colorToHSV(viewModel.color!!, hsv)
+        Color.colorToHSV(viewModel.habitBuilder.color!!, hsv)
         return hsv
     }
 
@@ -205,7 +218,7 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
     }
 
     private fun isColorSelected(): Boolean {
-        val result = viewModel.color != null
+        val result = viewModel.habitBuilder.color != null
         if (!result) {
             binding.selectedHabitColorError.setText(R.string.error_make_a_choice)
             binding.selectedHabitColorError.visibility = View.VISIBLE
@@ -234,6 +247,10 @@ class HabitEditorFragment : Fragment(), ColorPicker.OnColorSquareItemListener {
             val errorLayout: TextInputLayout,
             val errorStringResource: Int
     )
+
+    interface SupportActionBarHelper {
+        fun changeSupportActionBarTitle(title: String)
+    }
 
     companion object {
 

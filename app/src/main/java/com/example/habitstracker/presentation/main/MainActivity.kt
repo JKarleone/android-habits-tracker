@@ -12,8 +12,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.habitstracker.R
 import com.example.habitstracker.databinding.ActivityMainBinding
+import com.example.habitstracker.presentation.home.habiteditor.HabitEditorFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HabitEditorFragment.SupportActionBarHelper {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -51,6 +52,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfig) || super.onSupportNavigateUp()
+    }
+
+    override fun changeSupportActionBarTitle(title: String) {
+        supportActionBar?.title = title
     }
 
     companion object {

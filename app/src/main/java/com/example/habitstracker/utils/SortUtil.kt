@@ -1,6 +1,6 @@
 package com.example.habitstracker.utils
 
-import com.example.habitstracker.data.entity.Habit
+import com.example.domain.Habit
 
 object SortUtil {
 
