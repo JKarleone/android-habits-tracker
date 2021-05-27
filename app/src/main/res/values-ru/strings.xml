@@ -60,5 +60,8 @@
         <item quantity="other">Можете выполнить ещё %d раз</item>
     </plurals>
     <string name="button_done_text">Сделано</string>
+    <string name="dialog_delete_habit_message">Удалить привычку?</string>
+    <string name="dialog_delete_habit_positive_button">Удалить</string>
+    <string name="dialog_delete_habit_negative_button">Отмена</string>
 
 </resources>

@@ -49,7 +49,7 @@ class HabitRepositoryImpl(
 
     override suspend fun deleteHabit(habit: Habit) {
         habitDao.delete(habit.toHabitData())
-        habit.id.let { habitApi.deleteHabit(HabitUID(habit.id)) }
+        habitApi.deleteHabit(HabitUID(habit.id))
     }
 
     override suspend fun habitDone(habit: Habit, date: Int) {

@@ -77,5 +77,8 @@
 
     <string name="habit_bad_toast_more_than_goal">Stop it!</string>
     <string name="button_done_text">Done</string>
+    <string name="dialog_delete_habit_message">Delete habit?</string>
+    <string name="dialog_delete_habit_positive_button">Delete</string>
+    <string name="dialog_delete_habit_negative_button">Cancel</string>
 
 </resources>

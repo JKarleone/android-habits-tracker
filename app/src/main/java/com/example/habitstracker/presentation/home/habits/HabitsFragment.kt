@@ -15,13 +15,14 @@ import com.example.domain.Habit
 import com.example.domain.utils.HabitFrequency
 import com.example.domain.utils.HabitType
 import com.example.habitstracker.App
+import com.example.habitstracker.R
 import com.example.habitstracker.databinding.FragmentHabitsBinding
 import com.example.habitstracker.presentation.home.*
 import com.example.habitstracker.utils.HabitToastHelper
 import java.util.*
 import javax.inject.Inject
 
-class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
+class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener, DeleteItemDialogFragment.DeleteItemListener {
 
     private var _binding: FragmentHabitsBinding? = null
     private val binding get() = _binding!!
@@ -99,11 +100,23 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
         navController.navigate(action)
     }
 
+    override fun onHabitItemLongClick(habit: Habit): Boolean {
+        val dialogFragment = DeleteItemDialogFragment(this, habit)
+        val manager = requireActivity().supportFragmentManager
+        dialogFragment.show(manager, DeleteItemDialogFragment.TAG)
+
+        return true
+    }
+
     override fun onHabitDoneClick(habit: Habit) {
         val intDate = (Date().time / 1000).toInt()
 
         val toastText = viewModel.completeHabit(habit, intDate)
         Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun confirmButtonClicked(habit: Habit) {
+        viewModel.deleteHabit(habit)
     }
 
     companion object {

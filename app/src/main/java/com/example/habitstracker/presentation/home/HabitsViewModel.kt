@@ -73,4 +73,10 @@ class HabitsViewModel @Inject constructor(
         }
     }
 
+    fun deleteHabit(habit: Habit) {
+        viewModelScope.launch {
+            habitInteractor.deleteHabit(habit)
+        }
+    }
+
 }

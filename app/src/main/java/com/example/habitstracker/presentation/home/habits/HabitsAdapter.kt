@@ -33,6 +33,10 @@ class HabitsAdapter(
         holder.itemView.setOnClickListener {
             clickListener.onHabitItemClick(habits[position])
         }
+
+        holder.itemView.setOnLongClickListener {
+            clickListener.onHabitItemLongClick(habits[position])
+        }
     }
 
     override fun getItemCount(): Int {
@@ -79,6 +83,7 @@ class HabitsAdapter(
 
     interface OnHabitItemListener {
         fun onHabitItemClick(habit: Habit)
+        fun onHabitItemLongClick(habit: Habit): Boolean
         fun onHabitDoneClick(habit: Habit)
     }
 
