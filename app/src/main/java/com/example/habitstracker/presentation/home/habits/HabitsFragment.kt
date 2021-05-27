@@ -102,14 +102,9 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitItemListener {
     override fun onHabitDoneClick(habit: Habit) {
         val intDate = (Date().time / 1000).toInt()
 
-        val habitToastHelper = HabitToastHelper(requireContext())
-        val toastText = habitToastHelper.getToastText(habit)
+        val toastText = viewModel.completeHabit(habit, intDate)
         Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
-
-        viewModel.habitDone(habit, intDate)
     }
-
-
 
     companion object {
         /**

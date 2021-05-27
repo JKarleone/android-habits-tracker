@@ -4,13 +4,15 @@ import androidx.lifecycle.*
 import com.example.domain.Habit
 import com.example.domain.HabitInteractor
 import com.example.domain.utils.HabitType
+import com.example.habitstracker.utils.HabitToastHelper
 import com.example.habitstracker.utils.SortField
 import com.example.habitstracker.utils.SortUtil.getSortedList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HabitsViewModel @Inject constructor(
-    private val habitInteractor: HabitInteractor
+    private val habitInteractor: HabitInteractor,
+    private val toastHelper: HabitToastHelper
 ) : ViewModel() {
 
     var searchSubstring: MutableLiveData<String> = MutableLiveData("")
@@ -57,7 +59,15 @@ class HabitsViewModel @Inject constructor(
         return filteredHabits.getSortedList(sortField.value!!, sortByAscending.value!!)
     }
 
-    fun habitDone(habit: Habit, date: Int) {
+    fun completeHabit(habit: Habit, date: Int): String {
+        habitDone(habit, date)
+
+        val goalCount = habitInteractor.getGoalCount(habit) - 1
+
+        return toastHelper.getToastText(goalCount, habit.type)
+    }
+
+    private fun habitDone(habit: Habit, date: Int) {
         viewModelScope.launch {
             habitInteractor.habitDone(habit, date)
         }

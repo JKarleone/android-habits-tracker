@@ -9,7 +9,8 @@ import dagger.Subcomponent
 @Subcomponent(
     modules = [
         InteractorModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        ToastHelperModule::class
     ]
 )
 interface HabitSubcomponent {
